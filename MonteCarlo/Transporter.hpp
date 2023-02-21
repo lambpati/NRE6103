@@ -3,6 +3,8 @@
 #include <omp.h>
 #include <memory>
 #include <vector>
+#include "Particle.hpp"
+#include "XS_Sampler.hpp"
 
 // Class of Transporter, uses direct sampling for transport method
 class Transporter {
