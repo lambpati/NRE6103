@@ -9,6 +9,10 @@ class ReadProgram{
     static std::ifstream file;
     static int lineNum;
     static std::string contents;
+    std::string keyword;
+
+    
+
   public:
     ReadProgram() = default;
 
