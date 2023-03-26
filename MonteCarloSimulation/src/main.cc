@@ -1,8 +1,8 @@
-#include "ReadProgram.hpp"
-#include "UserControl.hpp"
-
 #include <string>
 #include <iostream>
+
+#include "src/readprogram.h"
+#include "src/usercontrol.h"
 
 int main(int argc, char const *argv[]){
     // Print intro to 1D solver

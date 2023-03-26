@@ -1,4 +1,4 @@
-#include "WriteOutput.hpp"
+#include "src/writeoutput.h"
 
 
 std::string WriteProgram::output = "output.txt";

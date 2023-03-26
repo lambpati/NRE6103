@@ -1,4 +1,4 @@
-#include "Geometry.hpp"
+#include "src/geometry.h"
 
 void Geometry::setXS(int arr[6]){
     DummyXS.sig_a = arr[0];

@@ -1,8 +1,8 @@
-#include "ReadProgram.hpp"
+#include "src/readprogram.h"
 
-#include "Tally.hpp"
-#include "Boundaries.hpp"
-#include "Geometry.hpp"
+#include "src/tally.h"
+#include "src/boundaries.h"
+#include "src/geometry.h"
 
 std::ifstream ReadProgram::file;
 int ReadProgram::lineNum;

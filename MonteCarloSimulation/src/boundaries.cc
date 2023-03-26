@@ -1,4 +1,4 @@
-#include "Boundaries.cpp"
+#include "../include/boundaries.h"
 
 void Boundaries::setBounds(char l, char r){
     boundaries.first = l;
