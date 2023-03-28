@@ -5,7 +5,7 @@
 class Boundaries{
     private:
         // Left pair = left boundary condition
-       pair<char, char> boundaries; 
+       static std::pair<char, char> bounds;
 
     public:
         //Methods
@@ -14,7 +14,7 @@ class Boundaries{
         //Getters
 
         //Setters
-        setBounds(char l, char r);
-        setLeft(char l);
-        setRight(char r;)
+        static void setBounds(char l, char r);
+        static void setLeft(char l);
+        static void setRight(char r);
 };

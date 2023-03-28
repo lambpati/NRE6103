@@ -1,1 +1,1 @@
-#include "src/tally.h"
+#include "../include/tally.h"

@@ -1,16 +1,16 @@
 #pragma once
 
-class Tally{
-    private:
-        static bool flux;
+class Tally {
+private:
+    static bool flux;
 
-    public:
-        //Methods
-        Tally() = default;
+public:
+    //Methods
+    Tally() = default;
 
-        //Getters
-        void getTallyType();
+    //Getters
+    void getTallyType();
 
-        //Setters
-        void setTallyType(bool f){ flux = f;}
-}
+    //Setters
+    static void setTallyType(bool f) { flux = f; }
+};
