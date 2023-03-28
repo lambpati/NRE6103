@@ -10,7 +10,7 @@ class ReadProgram{
     static std::ifstream file;
     static int lineNum;
     static std::string contents;
-    std::string keyword;
+    static std::string keyword;
 
     
 
@@ -23,7 +23,6 @@ class ReadProgram{
     //Methods
     static void read();
     static void parseFile();
-    void populateGeometry(std::string c);
-    void populateBoundaries(std::string c);
-    void populateCrossSections(std::string c);
+    static void populateGeometry();
+    static void populateBoundaries();
 };

@@ -1,12 +1,12 @@
 #pragma once
 
-class Transporter{
+class Transporter {
 
-    public:
-        //Methods
-        Transporter() = default;
+public:
+    //Methods
+    Transporter() = default;
 
-        //Getters
+    //Getters
 
-        //Setters
-}
+    //Setters
+};

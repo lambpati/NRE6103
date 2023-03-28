@@ -4,24 +4,21 @@
 #include <iostream>
 #include <chrono>
 
-using clock = std::chrono::system_clock;
-using sec = std::chrono::duration<double>;
 
 class UserControl{
     // Variables
     private:
         static std::string fileName;
-        const std::chrono::time_point start;
-        const sec duration;
+        const std::chrono::duration<double> duration;
 
     public:
         // Methods
         UserControl() = default;
         static void printIntro();
-        static void printOutro();
+        static void printOutro(std::chrono::duration<double> d);
         // Getters
         static std::string getFileName() { return fileName; }
 
         // Setters
-        static void setFileName(std::string f){ fileName = f; } 
+        static void setFileName(std::string f);
 };

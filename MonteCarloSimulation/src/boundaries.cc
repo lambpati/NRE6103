@@ -1,14 +1,14 @@
 #include "../include/boundaries.h"
 
 void Boundaries::setBounds(char l, char r){
-    boundaries.first = l;
-    boundaries.second = r;
+    bounds.first = l;
+    bounds.second = r;
 }
 
 void Boundaries::setLeft(char l){
-    boundaries.first = l;
+    bounds.first = l;
 }
 
 void Boundaries::setRight(char r){
-    boundaries.second = r;
+    bounds.second = r;
 }

@@ -1,6 +1,6 @@
-#include "src/geometry.h"
+#include "../include/geometry.h"
 
-void Geometry::setXS(int arr[6]){
+void Geometry::setXS(double arr[6]){
     DummyXS.sig_a = arr[0];
     DummyXS.sig_f = arr[1];
     DummyXS.v_sig_f = arr[2];
@@ -10,13 +10,13 @@ void Geometry::setXS(int arr[6]){
 }
 
 void Geometry::setGeometry(int loc){
-    auto s = make_pair(loc, DummyXS);
+    std::pair<int,CrossSections> s = std::make_pair(loc, DummyXS);
     // If vector is smaller than location, push_back (push_back faster than insert)
-    if(loc > geometry.size()){
-        geometry.push_back(s);
+    if(loc > data.size()){
+        data.push_back(s);
     }
     // Else put in at location
-    if(loc <= geometry.size()){
-        geometry.insert(geometry.begin() + loc, s)
+    else{
+        data.insert(data.begin() + loc, s);
     }
 }
