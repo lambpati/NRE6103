@@ -1,5 +1,6 @@
 #include "../include/usercontrol.h"
-#include <direct.h>
+
+#include<unistd.h>
 
 
 std::string UserControl::fileName = "";
@@ -20,5 +21,5 @@ void UserControl::setFileName(std::string fileName){
 }
 
 void UserControl::printOutro(std::chrono::duration<double> d){
-    std::cout << "Finished Computation in " << d << " seconds. Please look at the output.txt file." << std::endl;
+    //std::cout << "Finished Computation in " << d << " seconds. Please look at the output.txt file." << std::endl;
 }
