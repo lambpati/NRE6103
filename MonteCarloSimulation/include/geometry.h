@@ -23,10 +23,14 @@ class Geometry{
     std::pair<double,double> range;
     inline static CrossSections DummyXS;
 
+    // TO DO add these parameters to a readable input form
+    const int dx = 1000;
+
     
     public:
         //Methods
         Geometry() = default;
+        static void divide_geometry();
 
         //Getters
         static const std::vector<std::pair<int, CrossSections>> getGeometry() { return data; };
