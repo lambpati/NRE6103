@@ -6,6 +6,9 @@
 #include "../include/usercontrol.h"
 #include "../include/writeoutput.h"
 
+//FOR TESTING
+#include "../include/rng.h"
+
 int main(int argc, char const *argv[]){
     // Print intro to 1D solver
     UserControl::printIntro();
@@ -21,6 +24,11 @@ int main(int argc, char const *argv[]){
     WriteProgram::prettyPrintBoundaries();
     WriteProgram::prettyPrintTally();
     const std::chrono::duration<double> duration = std::chrono::system_clock::now() - start;
+
+    //TEST RNG
+    for (i = 0; i < 10; i++) {
+        std::cout << "random number: " << RNG::rand() << std::endl;
+    }
 
 
 }

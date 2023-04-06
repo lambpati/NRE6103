@@ -1,4 +1,3 @@
-
 #include <random>
 
 class RNG {

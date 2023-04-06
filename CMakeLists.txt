@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.14)
-project(MonteCarloSimulation
+project(NRE6103
   VERSION 0.1
   DESCRIPTION "Monte Carlo Simulation for Neutron Transport"
   LANGUAGES CXX
