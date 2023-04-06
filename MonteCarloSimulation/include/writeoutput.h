@@ -7,6 +7,8 @@
 #include <vector>
 
 #include "../include/geometry.h"
+#include "../include/boundaries.h"
+#include "../include/tally.h"
 
 class WriteProgram{
   private:
@@ -19,4 +21,6 @@ class WriteProgram{
     //Methods
     static void writeToOutput(std::vector<int> val);
     static void prettyPrintGeometry();
+    static void prettyPrintBoundaries();
+    static void prettyPrintTally();
 };

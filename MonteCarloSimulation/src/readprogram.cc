@@ -29,23 +29,33 @@ void ReadProgram::populateBoundaries(){
 }
 
 void ReadProgram::populateGeometry(){
-    while (file >> keyword) {
-        double XS_Data[6];
+    while (!file.eof()) {
+        double XS_Data[7];
+        std::string c;
+        file >> keyword;
         // Keyword is the region #
         int hkey = std::stoi(keyword);
+
         // Make sure its only numeric values
         if (keyword.find_first_of("0123456789") != std::string::npos) {
-            file >> keyword;
             // Populate the XS Data relevantly
-            for (int i = 0; i < 6; i++) {
-                file >> keyword;
+            for (int i = 0; i < 7; i++) {
+                file >> keyword; 
                 XS_Data[i] = std::stod(keyword);
+                //file >> keyword;
             }
             // Put into structure for easy access
             Geometry::setXS(XS_Data);
-            Geometry::setGeometry(hkey);
+            // Dumb fix but..
+            //Check for uniqueness between key and values at last XS_Data point and hkey. If they match, the file ended
+            if (hkey != (int)XS_Data[6]) {
+                Geometry::setGeometry(hkey);
+            }
+            else {
+                break;
+            }
         }
-        else { 
+        else {
             break;
         }
     }

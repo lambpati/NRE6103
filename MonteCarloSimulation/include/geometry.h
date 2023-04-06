@@ -6,6 +6,7 @@
 
 typedef struct{
     double sig_a;
+    double sig_s;
     double sig_f;
     double v_sig_f;
     double s;
@@ -18,9 +19,9 @@ class Geometry{
     private:
     // Storing in a vector of pairs for memory allocation and speed.
     // First value is key second value is values
-    static std::vector<std::pair<int, CrossSections>> data;
+    inline static std::vector<std::pair<int, CrossSections>> data;
     std::pair<double,double> range;
-    static CrossSections DummyXS;
+    inline static CrossSections DummyXS;
 
     
     public:
@@ -28,9 +29,9 @@ class Geometry{
         Geometry() = default;
 
         //Getters
-        const std::vector<std::pair<int, CrossSections>> getGeometry() { return data; };
-        const int getRegion(int loc) { return data.at(loc).first; };
-        const CrossSections getXS(int loc) { return data.at(loc).second; };
+        static const std::vector<std::pair<int, CrossSections>> getGeometry() { return data; };
+        static const int getRegion(int loc) { return data.at(loc).first; };
+        static const CrossSections getXS(int loc) { return data.at(loc).second; };
         
         //Setters
         void setRange(double X_min, double X_max);

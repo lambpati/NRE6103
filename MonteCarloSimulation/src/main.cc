@@ -18,6 +18,8 @@ int main(int argc, char const *argv[]){
     ReadProgram readprogram;
     readprogram.read();
     WriteProgram::prettyPrintGeometry();
+    WriteProgram::prettyPrintBoundaries();
+    WriteProgram::prettyPrintTally();
     const std::chrono::duration<double> duration = std::chrono::system_clock::now() - start;
 
 

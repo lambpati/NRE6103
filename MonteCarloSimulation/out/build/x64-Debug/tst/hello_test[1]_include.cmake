@@ -1,0 +1,5 @@
+if(EXISTS "C:/Users/pclam/source/repos/NRE6103/MonteCarloSimulation/out/build/x64-Debug/tst/hello_test[1]_tests.cmake")
+  include("C:/Users/pclam/source/repos/NRE6103/MonteCarloSimulation/out/build/x64-Debug/tst/hello_test[1]_tests.cmake")
+else()
+  add_test(hello_test_NOT_BUILT hello_test_NOT_BUILT)
+endif()

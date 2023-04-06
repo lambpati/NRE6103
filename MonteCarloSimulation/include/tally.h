@@ -2,14 +2,14 @@
 
 class Tally {
 private:
-    static bool flux;
+   inline static bool flux;
 
 public:
     //Methods
     Tally() = default;
 
     //Getters
-    void getTallyType();
+    static const bool getTallyType() { return flux; };
 
     //Setters
     static void setTallyType(bool f) { flux = f; }
