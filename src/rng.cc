@@ -1,1 +1,1 @@
-#include ".../include/rng.h"
+#include "../include/rng.h"

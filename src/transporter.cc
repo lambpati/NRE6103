@@ -13,5 +13,4 @@ void Transporter::russianRoulette(Particle& p){
             //Survived another day
             p.wgt = std::copysign(survive_weight, p.wgt);
         }
-    }
 }
