@@ -1,13 +1,12 @@
 #include "../include/writeoutput.h"
 
 
-
-std::string WriteProgram::output = "output.txt";
-std::ofstream WriteProgram::out;
-
+// If C++ 20 or above, use conditional formatting
+#if (__cplusplus >= 202002L)
+#include <format>
 void WriteProgram::prettyPrintGeometry() {
     auto dat = Geometry::getGeometry();
-    std::cout << "Constructed geometry according to below " << std::endl;
+    std::cout << "Constructed geometry according to below NOTE MAKE SURE SCREEN IS BIG ENOUGH TO SHOW TABLE CORRECTLY" << std::endl;
     std::cout << std::format("|{:^9}|{:^9}|{:^9}|{:^9}|{:^9}|{:^9}|{:^9}|{:^9}|\n", "Region", "Sigma A","Sigma S", "Sigma F", "V Sig F", "S", "X min", "X max");
     for (auto &d : dat) {
        int reg = d.first;
@@ -16,6 +15,24 @@ void WriteProgram::prettyPrintGeometry() {
 
      }
 }
+// Else use regular formatting
+#else
+void WriteProgram::prettyPrintGeometry() {
+    auto dat = Geometry::getGeometry();
+    std::cout << "Constructed geometry according to below NOTE MAKE SURE SCREEN IS BIG ENOUGH TO SHOW TABLE CORRECTLY" << std::endl;
+    std::cout << '|' << std::setw(10) << "Region" << '|' << std::setw(10) << "Sigma A" << '|' << std::setw(10) << "Sigma S" << '|' << std::setw(10) << "Sigma F" << '|' << std::setw(10) << "V Sig F" << '|' << std::setw(10) << "S" << '|' << std::setw(10) << "X min" << '|' << std::setw(10) << "X max" << std::endl;
+    for (auto &d : dat) {
+       int reg = d.first;
+       CrossSections xs = d.second;
+       std::cout << '|' << std::setw(10) << reg << '|' << std::setw(10) << xs.sig_a << '|' << std::setw(10) << xs.sig_s << '|' << std::setw(10) <<xs.sig_f << '|' << std::setw(10) << xs.v_sig_f << '|' << std::setw(10) << xs.s << '|' << std::setw(10) << xs.X_min << '|' << std::setw(10) << xs.X_max << std::endl;
+
+     }
+}
+#endif
+
+
+std::string WriteProgram::output = "output.txt";
+std::ofstream WriteProgram::out;
 
 void WriteProgram::prettyPrintBoundaries() {
     auto dat = Boundaries::getBoundaries();

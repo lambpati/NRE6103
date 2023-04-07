@@ -20,4 +20,8 @@ void Geometry::setGeometry(int loc){
     else{
         data.insert(data.begin() + loc, s);
     }
+
+    //Set global range
+    min = data.front().second.X_min;
+    max = data.back().second.X_max;
 }

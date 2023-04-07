@@ -10,7 +10,7 @@
 const std::filesystem::path correct_path = "..\\..\\..\\examples\\";
 #elif defined(__GNUC__)
 #include <unistd.h>
-const std::filesystem::path path = "../../examples/"
+const std::filesystem::path correct_path = "../examples/";
 #endif
 
 

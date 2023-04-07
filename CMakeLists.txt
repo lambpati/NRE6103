@@ -28,6 +28,6 @@ file(GLOB all_SRCS
         "${PROJECT_SOURCE_DIR}/include/*.h"
         "${PROJECT_SOURCE_DIR}/src/*.cc"
         )
-add_executable(MyTarget ${all_SRCS})
+add_executable(MonteCarlo1D ${all_SRCS})
 
 
