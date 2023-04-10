@@ -32,8 +32,6 @@ class Geometry{
     public:
         //Methods
         Geometry() = default;
-        static void divideGeometry();
-        static void determineGlobalRange();
 
         //Getters
         static const std::vector<std::pair<int, CrossSections>> getGeometry() { return data; };

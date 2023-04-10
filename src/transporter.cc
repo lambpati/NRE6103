@@ -8,6 +8,7 @@ void Transporter::russianRoulette(Particle& p){
             //Lost the game of Russian Roulette
             p.wgt = 0.;
             p.is_alive = false;
+            Bank::killParticle(p);
         }
         else {
             //Survived another day
@@ -41,5 +42,80 @@ void Transporter::determineMaterial(Particle& p, int i){
             Boundaries::determineBehavior(p, true);
         }
 
+    }
+}
+
+void moveParticle(Particle& p){
+    while(p.is_alive){
+        double prev_pos = p.pos;
+        p.pos(std::log(RNG::rand()+sigma_t))*p.dir;
+        // At this new location, does it experience a collision?
+        Transporter::collision(p);
+    }
+
+}
+
+void collision(Particle& p){
+    //Initial estimate of region is governed by the floor of p's position
+    Transporter::determineMaterial(p, std::floor(p.pos));
+    Tally::addColl(p.wgt);
+    double sig_tot = Geometry::getXSvRegion(current_region).sig_s + Geometry::getXSvRegion(current_region).sig_a;
+    // Scattering probability = sig_s / sig_total
+    double Pscatter = Geometry::getXSvRegion(current_region).sig_s / sig_tot;
+    // Fission probability = sig_f/ sig_total
+    double Pfission = Geometry::getXSvRegion(current_region).sig_f/sig_tot;
+    // Capture probability = sig_a/ sig_total - Pfission
+    double Pcapt = Geometry::getXSvRegion(current_region).sig_a/sig_tot- Pfission;
+
+    // Will it scatter?
+    if(RNG::rand() < Pscatter){
+        //If scatter, just change direction
+        bool new_dir = RNG::rand() > 0.5;
+        p.dir = new_dir;
+    }
+    else if(RNG::rand() < Pfission){
+        //Do fission
+        Transporter::fissionNeutrons(p);
+        p.wgt *= 1-Pfission;
+    }
+    else if(RNG::rand() < Pcapt){
+        // Captured
+        p.wgt *= 1-Pcapt;
+    }
+
+    Transporter::russianRoulette(p);
+}
+
+void Transporter::fissionNeutrons(Particle& p){
+    double sig_tot = Geometry::getXSvRegion(current_region).sig_s + Geometry::getXSvRegion(current_region).sig_a;
+    //Determine weighted k_score according to particle to determine if particle produces something
+    double k_score = p.wgt() * Geometry::getXSvRegion(current_region).v_sig_f / sig_tot;
+
+    //How many neutrons do we produce?
+    int n_new = 0;
+    // Is a flux based fixed source problem
+    if(Tally.getTallyType()){
+        n_new = std::floor(std::abs(k_score) + RNG::rand());
+    }
+    // Else is a eigenvalue problem
+    else{
+
+    }
+
+    // Make all new particles
+    for(int i = 0; i < n_new; i++){
+        // Randomize direction
+        bool new_dir = RNG::rand() > 0.5;
+        // Daughter particle has same weight as parent particle, same position, and is_alive=true, but different direction generated randomly
+        Particle p_d{dir,
+                    p.pos,
+                    p.wgt,
+                    true};
+        // Save particle as fission particle. Using banks to allow for threading in future
+        Bank::addParticle(p_d);
+        //Add to fission tally 
+        Tally::addFiss(p.pos);
+
+        Transporter::moveParticle(p_d);
     }
 }
