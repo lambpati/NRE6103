@@ -31,7 +31,7 @@ void WriteProgram::prettyPrintGeometry() {
 #endif
 
 
-std::string WriteProgram::output = "output.csv";
+std::string WriteProgram::output = "debug.csv";
 std::ofstream WriteProgram::out;
 
 void WriteProgram::prettyPrintBoundaries() {
@@ -61,4 +61,17 @@ void WriteProgram::writeToOutput(std::vector<double> val, std::vector<double> po
 //       out << '\n';
      }
      out.close();
+}
+
+void WriteProgram::writeToOutput(std::vector<int> val, std::vector<double> pos) {
+    //TODO Write output to txt in specified format
+//   // Results stored in examples folder "output.csv"
+    out.open(output, std::ios_base::binary, std::ios_base::trunc);
+    // Header
+    out << "Position,Collision Tally \n";
+    for (int i = 0; i < val.size(); i++) {
+        out << pos.at(i) << "," << val.at(i) << "\n";
+        //       out << '\n';
+    }
+    out.close();
 }

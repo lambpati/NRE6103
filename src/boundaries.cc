@@ -20,7 +20,7 @@ void Boundaries::setRight(char r){
 
 void Boundaries::reflect(Particle& p){
     //If specular boundary conditions are impinged, change direction to the negative direction
-     p.dir != p.dir;
+     p.dir = -1*p.dir;
 }
 
 void Boundaries::vaccuum(Particle& p){
