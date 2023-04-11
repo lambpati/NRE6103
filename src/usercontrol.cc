@@ -23,7 +23,3 @@ void UserControl::setFileName(std::string f){
     std::cout << "Processing file " << fileName << " in " << cpath << std::endl;
 
 }
-
-void UserControl::printOutro(std::chrono::duration<double> d){
-    //std::cout << "Finished Computation in " << d << " seconds. Please look at the output.txt file." << std::endl;
-}

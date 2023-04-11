@@ -12,7 +12,7 @@ int main(int argc, char const *argv[]){
 
     // TO DO add these parameters to a readable input form
     const int dx = 1000;
-    const double particles = 10000000;
+    const double particles = 1000000;
 
 
     // Print intro to 1D solver
@@ -22,7 +22,7 @@ int main(int argc, char const *argv[]){
     std::string name;
     std::cin >> name;
     UserControl::setFileName(name);
-    const std::chrono::time_point<std::chrono::system_clock> start = std::chrono::system_clock::now();
+    auto start = std::chrono::high_resolution_clock::now();
     ReadProgram readprogram;
     readprogram.read();
     WriteProgram::prettyPrintGeometry();
@@ -42,9 +42,9 @@ int main(int argc, char const *argv[]){
     for(auto i : Bank::getMeshBank()){
         transporter.moveParticle(i);
     }
-    const std::chrono::duration<double> duration = std::chrono::system_clock::now() - start;
-
+    auto end = std::chrono::high_resolution_clock::now();
     WriteProgram::writeToOutput(Tally::getCollTally(),Tally::getMesh());
-
+    double elapsed_time = std::chrono::duration<double>(end-start).count();
+    std::cout << "Finished Computation in " << elapsed_time << " seconds. Please look at the output.csv file." << std::endl;
 
 }
