@@ -50,12 +50,12 @@ void WriteProgram::prettyPrintTally() {
 }
 
 // Writes array values val into a csv file known as "output.csv"
-void WriteProgram::writeToOutput(std::vector<int> val, std::vector<double> pos){
+void WriteProgram::writeToOutput(std::vector<double> val, std::vector<double> pos){
     //TODO Write output to txt in specified format
 //   // Results stored in examples folder "output.csv"
        out.open(output, std::ios_base::trunc);
        // Header
-       out << "Position,Collision Tally \n";
+       out << "Position,Flux \n";
        for(int i=0; i < val.size(); i++){
         out << pos.at(i) << "," << val.at(i) << "\n";
 //       out << '\n';

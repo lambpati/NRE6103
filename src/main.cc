@@ -38,12 +38,12 @@ int main(int argc, char const *argv[]){
         transporter.initParticles();
     }
 
-    //TESTING
     for(auto i : Bank::getMeshBank()){
         transporter.moveParticle(i);
     }
+    Tally::calculateFlux(particles, dx);
     auto end = std::chrono::high_resolution_clock::now();
-    WriteProgram::writeToOutput(Tally::getCollTally(),Tally::getMesh());
+    WriteProgram::writeToOutput(Tally::getFlux(),Tally::getMesh());
     double elapsed_time = std::chrono::duration<double>(end-start).count();
     std::cout << "Finished Computation in " << elapsed_time << " seconds. Please look at the output.csv file." << std::endl;
 

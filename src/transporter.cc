@@ -92,7 +92,7 @@ void Transporter::collision(Particle& p){
     if(!p.is_alive){
         return;
     }
-    Tally::addColl(p.pos, p.wgt);
+    //Tally::addColl(p.pos, p.wgt);
     double sig_tot = Geometry::getXSvRegion(current_region).sig_s + Geometry::getXSvRegion(current_region).sig_a;
     // Scattering probability = sig_s / sig_total
     double Pscatter = Geometry::getXSvRegion(current_region).sig_s / sig_tot;
@@ -103,16 +103,19 @@ void Transporter::collision(Particle& p){
 
     // Will it scatter?
     if(RNG::rand() < Pscatter){
+        Tally::addColl(p.pos, p.wgt);
         //If scatter, just change direction
         bool new_dir = RNG::rand() > 0.5;
         p.dir = new_dir;
     }
     else if(RNG::rand() < Pfission){
+        Tally::addColl(p.pos, p.wgt);
         //Do fission
         Transporter::fissionNeutrons(p);
         p.wgt *= 1-Pfission;
     }
     else if(RNG::rand() < Pcapt){
+        Tally::addColl(p.pos, p.wgt);
         // Captured
         p.wgt *= 1-Pcapt;
     }
@@ -123,13 +126,14 @@ void Transporter::collision(Particle& p){
 void Transporter::fissionNeutrons(Particle& p){
     double sig_tot = Geometry::getXSvRegion(current_region).sig_s + Geometry::getXSvRegion(current_region).sig_a;
     //Determine weighted k_score according to particle to determine if particle produces something
-    double k_score = p.wgt * Geometry::getXSvRegion(current_region).v_sig_f / sig_tot;
+    // double k_score = p.wgt * Geometry::getXSvRegion(current_region).v_sig_f / sig_tot;
+    double k_score = p.wgt * Geometry::getXSvRegion(current_region).v_sig_f / Geometry::getXSvRegion(current_region).sig_f;
 
     //How many neutrons do we produce?
     int n_new = 0;
     // Is a flux based fixed source problem
     if(Tally::getTallyType()){
-        n_new = std::floor(std::abs(k_score) + RNG::rand());
+        n_new = int(std::abs(k_score) + RNG::rand());
     }
     // Else is a eigenvalue problem
     else{
