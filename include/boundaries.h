@@ -2,6 +2,7 @@
 
 #include <utility>
 
+#include "../include/bank.h"
 #include "../include/particle.h"
 
 class Boundaries{

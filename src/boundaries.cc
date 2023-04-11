@@ -25,7 +25,9 @@ void Boundaries::reflect(Particle& p){
 
 void Boundaries::vaccuum(Particle& p){
     //If vaccuum boundary conditions are impinged, particle gets lost and thus dies
+    p.wgt = 0.;
     p.is_alive = false;
+    Bank::killParticles(p);
 }
 
 void Boundaries::determineBehavior(Particle& p, bool side){

@@ -21,7 +21,7 @@ class WriteProgram{
     WriteProgram() = default;
 
     //Methods
-    static void writeToOutput(std::vector<int> val);
+    static void writeToOutput(std::vector<int> val, std::vector<double> pos);
     static void prettyPrintGeometry();
     static void prettyPrintBoundaries();
     static void prettyPrintTally();

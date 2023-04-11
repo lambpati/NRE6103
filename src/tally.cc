@@ -1,30 +1,42 @@
 #include "../include/tally.h"
 
-void Tally:makeMesh(int res){
-    fiss_tally.resize(res);
-    coll_tally.resize(res);
-
+void Tally::makeMesh(int res){
+    fiss_tally.resize(res+1);
+    coll_tally.resize(res+1);
     std::fill(fiss_tally.begin(), fiss_tally.end(), 0);
     std::fill(coll_tally.begin(), coll_tally.end(), 0);
+    Tally::determineBin(res);
+    for(int i=0; i <= res; i++){
+        mesh.push_back(w*i);
+    }
 }
 
-int Tally::determineBin(double pos){
-    
+void Tally::determineBin(int bins){
+    double bin = (double) bins;
+    // Get width of each bin
+    w = (Geometry::getMax()-Geometry::getMin())/bin;
 }
 
-void Tally::addColl(double pos, double weight=1){
-    if(flux){
+void Tally::addColl(double pos, double weight, int i){
+    //recursively find bin   
+    if(pos >= w*i && pos <= w*(i+1)){
+        if(flux){
      // If fixed source, collision tally is a sum of weights
-        coll_tally.at(pos) += weight;   
+            coll_tally.at(i) += weight; 
+        }
+        else{
+        // Else collision tallies are only summed by +1
+            coll_tally.at(i) += 1;
+
+        }
     }
     else{
-     // Else collision tallies are only summed by +1
-        coll_tally.at(pos) += 1;
+        Tally::addColl(pos, weight, i+1);
     }
+    
 }
 
 void Tally::addFiss(double pos){
     //Get the X_min and X_max of global, divide by resolution
-    // Determine the increments 
-    if(p.pos <)
+    // Determine the increments
 }

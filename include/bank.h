@@ -1,6 +1,8 @@
 #pragma once
 
 #include <vector>
+#include <algorithm>
+#include <iterator>
 
 #include "../include/particle.h"
 
@@ -14,9 +16,9 @@ class Bank{
         Bank() = default;
 
         static void addParticle(Particle& p);
-        static void killParticle(Particle& p);
+        static void killParticles(Particle& p);
         //Getters
-
+        static const std::vector<Particle> getMeshBank(){return mesh_bank; };
         //Setters
         
 

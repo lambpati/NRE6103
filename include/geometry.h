@@ -25,9 +25,6 @@ class Geometry{
     inline static double min;
     inline static CrossSections DummyXS;
 
-    // TO DO add these parameters to a readable input form
-    const int dx = 1000;
-
     
     public:
         //Methods

@@ -31,13 +31,15 @@ void WriteProgram::prettyPrintGeometry() {
 #endif
 
 
-std::string WriteProgram::output = "output.txt";
+std::string WriteProgram::output = "output.csv";
 std::ofstream WriteProgram::out;
 
 void WriteProgram::prettyPrintBoundaries() {
     auto dat = Boundaries::getBoundaries();
     std::cout << "Boundaries constructed below " << std::endl;
-    std::cout << "Left: " << dat.first << " Right: " << dat.second << std::endl;
+    std::string type_1 = dat.first ? "Vacuum" : "Specular";
+    std::string type_2 = dat.second ? "Vacuum" : "Specular";
+    std::cout << "Left: " << type_1 << " Right: " << type_2 << std::endl;
 }
 
 void WriteProgram::prettyPrintTally() {
@@ -47,13 +49,16 @@ void WriteProgram::prettyPrintTally() {
     std::cout << "Problem type: " << type << std::endl;
 }
 
-// Writes array values val into a txt file known as "output.txt"
-void WriteProgram::writeToOutput(std::vector<int> val){
+// Writes array values val into a csv file known as "output.csv"
+void WriteProgram::writeToOutput(std::vector<int> val, std::vector<double> pos){
     //TODO Write output to txt in specified format
-//   // Results stored in build folder "output.txt"
-//   out.open(output, std::ios_base::trunc);
-//     for(auto &e : val){
-//       out << e;
+//   // Results stored in examples folder "output.csv"
+       out.open(output, std::ios_base::trunc);
+       // Header
+       out << "Position,Collision Tally \n";
+       for(int i=0; i < val.size(); i++){
+        out << pos.at(i) << "," << val.at(i) << "\n";
 //       out << '\n';
-//     }
+     }
+     out.close();
 }
