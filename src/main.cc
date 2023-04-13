@@ -24,7 +24,7 @@ int main(int argc, char const *argv[]){
     std::string name;
     std::cin >> name;
     UserControl::setFileName(name);
-    auto start = std::chrono::high_resolution_clock::now();
+
     ReadProgram readprogram;
     readprogram.read();
     WriteProgram::prettyPrintGeometry();
@@ -35,6 +35,9 @@ int main(int argc, char const *argv[]){
 
     Tally::makeMesh(dx);
 
+    std::cout << "System timestamp: " << __TIMESTAMP__ << std::endl;
+    auto start = std::chrono::high_resolution_clock::now();
+
     // Make particles
     for(int i = 0; i < particles; i++){
        transporter.initParticles(dx);
@@ -43,8 +46,11 @@ int main(int argc, char const *argv[]){
     int cnt = 0;
     while(!Bank::getMeshBank().empty()){
         for(auto e : Bank::getMeshBank()){
-            if (++cnt % 1000 == 0)
-                std::cout << cnt << std::endl;
+            if (++cnt % 10000 == 0) {
+                auto end = std::chrono::high_resolution_clock::now();
+                double elapsed_time = std::chrono::duration<double>(end - start).count();
+                std::cout << "Elapsed time: " << elapsed_time << " seconds." << std::endl;
+            }
             transporter.moveParticle(e, dx);
             //std::cout << "New particle " << std::endl;
            // std::cout << "Bank size: " << Bank::getMeshBank().size() << std::endl;
