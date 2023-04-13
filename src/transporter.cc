@@ -158,6 +158,7 @@ void Transporter::collision(Particle& p){
         //Tally::addColl(p.pos, p.wgt);
         //Bank::addParticle(p);
         // Captured
+        // Stuck here (for obvious reasons)
         p.wgt *= Pcapt;
        // std::cout << "captured " << std::endl;
     }
