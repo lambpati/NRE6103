@@ -37,7 +37,7 @@ class Geometry{
         static const int getRegion(int loc) { return data.at(loc).first; };
         static const CrossSections getXS(int loc) { return data.at(loc).second; };
         // Region indexes at 1, loc indexes at 0 so subtract 1 from r to get loc
-        static const CrossSections getXSvRegion(int r){ return data.at(r-1).second; };
+        static const CrossSections getXSvRegion(int r){ return data.at(r).second; };
         static const double getMax(){ return max; };
         static const double getMin(){return min; };
         static const std::vector<int> getVecReg(){return regions;};

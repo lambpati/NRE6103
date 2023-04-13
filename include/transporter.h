@@ -5,7 +5,7 @@
 #include <vector>
 
 #include "../include/particle.h"
-#include "../include/rng.h"
+#include "../include/rng_gen.h"
 #include "../include/geometry.h"
 #include "../include/boundaries.h"
 #include "../include/bank.h"
@@ -18,9 +18,12 @@ class Transporter {
        const double weight_cutoff = 0.1;
 
         // normally would be transport correction factor but idk
-       double sigma_ts;
+       double sigma_ts = 0 ;
 
-       int current_region;
+       int current_region = 0;
+
+       double left_bound = 0;
+       double right_bound = 0;
 
 
 
@@ -35,8 +38,6 @@ class Transporter {
         void moveParticle(Particle& p, double dx);
         void determineMaterial(Particle& p);
         void fissionNeutrons(Particle& p);
-        void scatterNeutrons(Particle& p);
-        void captureNeutrons(Particle& p);
 
         //Getters
 

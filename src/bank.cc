@@ -18,6 +18,7 @@ void Bank::moveParticles(){
 
 void Bank::killParticles(Particle& p){
     // pop front
-    assert(!mesh_bank.empty());
-    mesh_bank.erase(mesh_bank.begin());
+   // assert(!mesh_bank.empty());
+    if (!mesh_bank.empty())
+        mesh_bank.erase(mesh_bank.begin());
 }
