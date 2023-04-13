@@ -62,3 +62,31 @@ void WriteProgram::writeToOutput(std::vector<double> val, std::vector<double> po
      }
      out.close();
 }
+
+// Writes array values val into a csv file known as "output.csv"
+void WriteProgram::writeToOutput(std::vector<int> val, std::vector<double> pos){
+    //TODO Write output to txt in specified format
+//   // Results stored in examples folder "output.csv"
+       out.open(output, std::ios_base::trunc);
+       // Header
+       out << "Position,Collisions \n";
+       for(int i=0; i < val.size(); i++){
+        out << pos.at(i) << "," << val.at(i) << "\n";
+//       out << '\n';
+     }
+     out.close();
+}
+
+// Writes array values val into a csv file known as "output.csv"
+void WriteProgram::writeToOutput(std::vector<std::pair<double,double>> val){
+    //TODO Write output to txt in specified format
+//   // Results stored in examples folder "output.csv"
+       out.open(output, std::ios_base::trunc);
+       // Header
+       out << "Position,Collisions \n";
+       for(auto &e : val){
+        out << e.first << "," << e.second << "\n";
+//       out << '\n';
+     }
+     out.close();
+}

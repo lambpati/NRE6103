@@ -1,5 +1,9 @@
 #pragma once
 
+#include <algorithm>
+#include <iterator>
+#include <vector>
+
 #include "../include/particle.h"
 #include "../include/rng.h"
 #include "../include/geometry.h"
@@ -14,7 +18,7 @@ class Transporter {
        const double weight_cutoff = 0.1;
 
         // normally would be transport correction factor but idk
-       const double sigma_t = 1/100000;
+       double sigma_ts;
 
        int current_region;
 
@@ -24,12 +28,12 @@ class Transporter {
         //Methods
         Transporter() = default;
 
-        void initParticles();
+        void initParticles(double dx);
 
         void russianRoulette(Particle& p);
         void collision(Particle& p);
-        void moveParticle(Particle& p);
-        void determineMaterial(Particle& p, int i=1);
+        void moveParticle(Particle& p, double dx);
+        void determineMaterial(Particle& p);
         void fissionNeutrons(Particle& p);
         void scatterNeutrons(Particle& p);
         void captureNeutrons(Particle& p);

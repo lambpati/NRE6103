@@ -20,6 +20,7 @@ class Geometry{
     // Storing in a vector of pairs for memory allocation and speed.
     // First value is key second value is values
     inline static std::vector<std::pair<int, CrossSections>> data;
+    inline static std::vector<int> regions;
     //Global maxes and mins
     inline static double max;
     inline static double min;
@@ -30,6 +31,7 @@ class Geometry{
         //Methods
         Geometry() = default;
 
+
         //Getters
         static const std::vector<std::pair<int, CrossSections>> getGeometry() { return data; };
         static const int getRegion(int loc) { return data.at(loc).first; };
@@ -38,6 +40,8 @@ class Geometry{
         static const CrossSections getXSvRegion(int r){ return data.at(r-1).second; };
         static const double getMax(){ return max; };
         static const double getMin(){return min; };
+        static const std::vector<int> getVecReg(){return regions;};
+
         
         //Setters
         void setRange(double X_min, double X_max);

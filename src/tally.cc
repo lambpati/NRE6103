@@ -1,37 +1,28 @@
 #include "../include/tally.h"
 
 void Tally::makeMesh(int res){
-    fiss_tally.resize(res+1);
-    coll_tally.resize(res+1);
-    std::fill(fiss_tally.begin(), fiss_tally.end(), 0);
-    std::fill(coll_tally.begin(), coll_tally.end(), 0);
-    Tally::determineBin(res);
+    // Get width of each bin
+    w = (Geometry::getMax()-Geometry::getMin())/res;
     for(int i=0; i <= res; i++){
         mesh.push_back(w*i);
+        collisions.push_back(std::make_pair((w*i),0.));
+        pathlengths.push_back(std::make_pair((w*i),0.));
     }
 }
 
-void Tally::determineBin(int bins){
-    double bin = (double) bins;
-    // Get width of each bin
-    w = (Geometry::getMax()-Geometry::getMin())/bin;
-}
-
-void Tally::addColl(double pos, double weight, int i){
-    //recursively find bin   
-    if(pos >= w*i && pos <= w*(i+1)){
-        if(flux){
-     // If fixed source, collision tally is a sum of weights
-            coll_tally.at(i) += weight; 
-        }
-        else{
-        // Else collision tallies are only summed by +1
-            coll_tally.at(i) += 1;
-
+void Tally::addColl(double pos, double weight){
+   double val;
+    if(flux){
+        for(int i = 0; i < mesh.size(); i++){
+            // Tally simulat to MGMC collision_mesh_tally.cpp line 58-64 tallying weight instead and evaluating on position
+           if(mesh.at(i) <= pos && pos <= mesh.at(i+1)){
+                coll_tally.at(i) += weight;
+                break;
+           }
         }
     }
     else{
-        Tally::addColl(pos, weight, i+1);
+
     }
     
 }
@@ -69,20 +60,23 @@ void Tally::determineMaterial(double pos, int i){
     }
 }
 
-void Tally::calculateFlux(double particles, int bins){
-    if(flux){
-        for(int i = 0; i < mesh.size(); i++){
-            double pos = w*i;
-            double collisions = coll_tally.at(i)/particles;
-            rx_rate.push_back(collisions);
-            Tally::determineMaterial(pos,1);
-            double sig_tot = Geometry::getXSvRegion(reg).sig_s + Geometry::getXSvRegion(reg).sig_a;
-            // Hardcoded region 3
-            double source = Geometry::getXSvRegion(3).s;
-            flux_rate.push_back(collisions*sig_tot*bins);
+void Tally::calculateFlux(double pos, int i){
+}
+
+void Tally::accumulateColl(double pos, double weight){
+    for(int i = 0; i < collisions.size(); i++){
+        if(collisions.at(i).first <= pos && pos <= collisions.at(i+1).first){
+            collisions.at(i).second += weight;
         }
     }
-    else{
 
+}
+
+void Tally::pathLengthTally(double pos, double prev_pos, double dir, double weight) {
+    for(int i = 0; i < pathlengths.size(); i++){
+        if(pathlengths.at(i).first <= pos && pos <= pathlengths.at(i+1).first){
+            pathlengths.at(i).second += weight*(pos-prev_pos);
+        }
     }
-} 
+
+}
