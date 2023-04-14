@@ -8,13 +8,14 @@ void Tally::makeMesh(int res){
     for(int i=0; i <= res; i++){
         pathlengths.push_back(std::make_pair((w*i),0.));
     }
+    saved_res = res;
+    saved_particles = particles;
 }
 
 void Tally::pathLengthTally(double pos, double prev_pos, double dir, double weight, double particles) {
     double left_pos = std::min(prev_pos, pos);
     double rite_pos = std::max(prev_pos, pos);
     //std::cout << prev_pos << " to " << pos << ". Dir: " << dir << std::endl;
-
     // Normalize per bin / particle_count * source_strength * source_width
     double dist = rite_pos - left_pos;
 
@@ -26,5 +27,4 @@ void Tally::pathLengthTally(double pos, double prev_pos, double dir, double weig
             pathlengths.at(i).second += std::abs(weight / dir * dist / w) / particles * Geometry::getXS(2).s *  (Geometry::getXS(2).X_max-Geometry::getXS(2).X_min);
         }
     }
-
 }

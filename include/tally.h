@@ -12,13 +12,14 @@
 class Tally {
 private:
     inline static bool flux;
-    inline static double w;
-    inline static std::vector<std::pair<double, double>> pathlengths;
+    inline static std::vector<int> coll_tally;
+    inline static std::vector<double> trac_length;
+    inline static std::vector<int> fiss_tally;
 
 public:
     //Methods
     Tally() = default;
-
+    
     static void makeMesh(int res);
     static void pathLengthTally(double pos, double prev_pos, double dir, double weight, double particles);
     //Getters

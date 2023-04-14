@@ -31,7 +31,7 @@ void WriteProgram::prettyPrintGeometry() {
 #endif
 
 
-std::string WriteProgram::output = "output.csv";
+std::string WriteProgram::output = "debug.csv";
 std::ofstream WriteProgram::out;
 
 void WriteProgram::prettyPrintBoundaries() {

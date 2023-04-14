@@ -1,6 +1,5 @@
 #include "../include/transporter.h"
 
-
 //TESTING
 #include <iostream>
 
@@ -14,6 +13,7 @@ void Transporter::initParticles(double dx){
         // Derive p.pos from current region max and min and normalized random number
         p.pos = RNG_GEN::rand()*(Geometry::getXSvRegion(2).X_max-Geometry::getXSvRegion(2).X_min)+Geometry::getXSvRegion(2).X_min;
         p.dir = 1-2*RNG_GEN::rand();
+        
         // Set p.wgt to 1
         p.wgt = 1;
         // Set to is_alive = true
@@ -21,7 +21,8 @@ void Transporter::initParticles(double dx){
     }
     // Else is eigenvalue problem
     else{
-
+        //current_region = Geometry::getRegion(2);
+        throw;
     }
     Bank::addParticle(p);
 }
@@ -69,6 +70,11 @@ void Transporter::determineMaterial(Particle& p){
 
 void Transporter::moveParticle(Particle& p, double dx, double particles){
     while(p.is_alive){
+        if (cnt++ > 10000) {
+            std::cout << p.pos << " is stuck" << std::endl;
+            throw;
+        }
+
         double prev_pos = p.pos;
        // std::cout << p.pos << " position " << p.dir << " dir " << std::endl;
         Transporter::determineMaterial(p);

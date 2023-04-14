@@ -25,6 +25,7 @@ class WriteProgram{
     static void writeToOutput(std::vector<double> val, std::vector<double> pos);
     static void writeToOutput(std::vector<int> val, std::vector<double> pos);
     static void writeToOutput(std::vector<std::pair<double, double>> val);
+    
     static void prettyPrintGeometry();
     static void prettyPrintBoundaries();
     static void prettyPrintTally();

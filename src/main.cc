@@ -13,7 +13,7 @@
 int main(int argc, char const *argv[]){
 
     // TO DO add these parameters to a readable input form
-    const int dx = 1000;
+    const int dx = 100;
     const double particles = 1000000;
     RNG_GEN::setSeed(896654);
 
@@ -34,7 +34,7 @@ int main(int argc, char const *argv[]){
 
     Transporter transporter;
 
-    Tally::makeMesh(dx);
+    Tally::makeMesh(dx, particles);
 
     std::cout << "System timestamp: " << __TIMESTAMP__ << std::endl;
     auto start = std::chrono::high_resolution_clock::now();
@@ -47,6 +47,7 @@ int main(int argc, char const *argv[]){
 
 
     int cnt = 0;
+    
     while(!Bank::getMeshBank().empty()){
         for(auto& e : Bank::getMeshBank()){
             if (++cnt % 10000 == 0) {
@@ -64,6 +65,7 @@ int main(int argc, char const *argv[]){
 
     auto end = std::chrono::high_resolution_clock::now();
     WriteProgram::writeToOutput(Tally::getPathlengths());
+
     double elapsed_time = std::chrono::duration<double>(end-start).count();
     std::cout << "Finished Computation in " << elapsed_time << " seconds. Please look at the output.csv file." << std::endl;
 
