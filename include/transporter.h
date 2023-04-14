@@ -17,9 +17,6 @@ class Transporter {
        const double survive_weight = 0.8; // Between 0 and 1 values
        const double weight_cutoff = 0.1;
 
-        // normally would be transport correction factor but idk
-       double sigma_ts = 0 ;
-
        int current_region = 0;
 
        double left_bound = 0;
@@ -35,7 +32,7 @@ class Transporter {
 
         void russianRoulette(Particle& p);
         void collision(Particle& p);
-        void moveParticle(Particle& p, double dx);
+        void moveParticle(Particle& p, double dx, double particles);
         void determineMaterial(Particle& p);
         void fissionNeutrons(Particle& p);
 

@@ -51,8 +51,6 @@ void WriteProgram::prettyPrintTally() {
 
 // Writes array values val into a csv file known as "output.csv"
 void WriteProgram::writeToOutput(std::vector<double> val, std::vector<double> pos){
-    //TODO Write output to txt in specified format
-//   // Results stored in examples folder "output.csv"
        out.open(output, std::ios_base::trunc);
        // Header
        out << "Position,Flux \n";
@@ -65,8 +63,6 @@ void WriteProgram::writeToOutput(std::vector<double> val, std::vector<double> po
 
 // Writes array values val into a csv file known as "output.csv"
 void WriteProgram::writeToOutput(std::vector<int> val, std::vector<double> pos){
-    //TODO Write output to txt in specified format
-//   // Results stored in examples folder "output.csv"
        out.open(output, std::ios_base::trunc);
        // Header
        out << "Position,Collisions \n";
@@ -83,7 +79,7 @@ void WriteProgram::writeToOutput(std::vector<std::pair<double,double>> val){
 //   // Results stored in examples folder "output.csv"
        out.open(output, std::ios_base::trunc);
        // Header
-       out << "Position,Collisions \n";
+       out << "Position,Flux \n";
        for(auto &e : val){
         out << e.first << "," << e.second << "\n";
 //       out << '\n';

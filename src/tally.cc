@@ -28,9 +28,6 @@ void Tally::addColl(double pos, double weight){
     
 }
 
-void Tally::calculateFlux(double pos, int i){
-}
-
 void Tally::accumulateColl(double pos, double weight){
     for(int i = 0; i < collisions.size(); i++){
         if(collisions.at(i).first <= pos && pos <= collisions.at(i+1).first){
@@ -40,7 +37,7 @@ void Tally::accumulateColl(double pos, double weight){
 
 }
 
-void Tally::pathLengthTally(double pos, double prev_pos, double dir, double weight) {
+void Tally::pathLengthTally(double pos, double prev_pos, double dir, double weight, double particles) {
     double left_pos = std::min(prev_pos, pos);
     double rite_pos = std::max(prev_pos, pos);
     //std::cout << prev_pos << " to " << pos << ". Dir: " << dir << std::endl;
@@ -50,10 +47,10 @@ void Tally::pathLengthTally(double pos, double prev_pos, double dir, double weig
 
     for(int i = 0; i < pathlengths.size() - 1; i++){
         if(left_pos <= pathlengths.at(i).first && rite_pos >= pathlengths.at(i+1).first){
-            pathlengths.at(i).second += std::abs(weight / dir); // / 1000000 * 50 * 5;
+            pathlengths.at(i).second += std::abs(weight / dir) / particles * Geometry::getXS(2).s *  (Geometry::getXS(2).X_max-Geometry::getXS(2).X_min); // / 1000000 * 50 * 5;
         }
         if (left_pos >= pathlengths.at(i).first && rite_pos <= pathlengths.at(i + 1).first) {
-            pathlengths.at(i).second += std::abs(weight / dir * dist / w);
+            pathlengths.at(i).second += std::abs(weight / dir * dist / w) / particles * Geometry::getXS(2).s *  (Geometry::getXS(2).X_max-Geometry::getXS(2).X_min);
         }
     }
 

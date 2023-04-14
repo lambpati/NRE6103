@@ -29,7 +29,6 @@ void Boundaries::vaccuum(Particle& p){
     //If vaccuum boundary conditions are impinged, particle gets lost and thus dies
     p.wgt = 0.;
     p.is_alive = false;
-    //std::cout << p.is_alive << std::endl;
     Bank::killParticles(p);
 }
 

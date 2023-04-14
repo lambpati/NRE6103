@@ -1,0 +1,6 @@
+// PROBLEM 2a
+// Consider the problem shown in Fig. 2 for which the cross sections and other
+// parameters are listed in Table 2. Impose specular boundary condition (BC) on the
+// left external surface, and vacuum BC on the right external surface.
+// Calculate the Eigenvalue and Flux distribution in this problem
+

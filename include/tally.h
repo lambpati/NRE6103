@@ -35,7 +35,7 @@ public:
     static void accumulateColl(double pos, double weight);
     static void accumulatePath (double pos, double prev_pos, double dir, double weight);
     static void determineMaterial(double pos, int i);
-    static void pathLengthTally(double pos, double prev_pos, double dir, double weight);
+    static void pathLengthTally(double pos, double prev_pos, double dir, double weight, double particles);
     //Getters
     static const bool getTallyType() { return flux; };
     static const std::vector<int> getCollTally(){ return coll_tally; };
