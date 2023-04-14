@@ -4,7 +4,7 @@
 //TESTING
 #include <iostream>
 
-void Transporter::initParticles(double dx, int i){
+void Transporter::initParticles(double dx, double part, int i){
     //Make new particle
     Particle p;
     // If flux fixed source problem
@@ -21,9 +21,11 @@ void Transporter::initParticles(double dx, int i){
     }
     // Else is eigenvalue problem
     else{
-        current_region = i;
+        current_region = Geometry::getRegion(2);
+        Transporter::detDist(part,i);
         // Populate bank with v_sig_f as initial guess
-        p.pos = Geometry::getXS(i).v_sig_f;
+        p.pos = Transporter::detDist(part, i);
+        //std::cout << p.pos << std::endl;
         p.dir = 1-2*RNG_GEN::rand();
         // Set p.wgt to 1
         p.wgt = 1;
@@ -32,6 +34,11 @@ void Transporter::initParticles(double dx, int i){
     }
     
     Bank::addParticle(p);
+}
+
+double Transporter::detDist(double part, int i) {
+    double position = (Geometry::getMax() - Geometry::getMin()) / part * i;
+    return position;
 }
 
 void Transporter::russianRoulette(Particle& p){
@@ -79,7 +86,7 @@ void Transporter::determineMaterial(Particle& p){
 void Transporter::moveParticle(Particle& p, double dx, double particles){
     while(p.is_alive){
         double prev_pos = p.pos;
-       // std::cout << p.pos << " position " << p.dir << " dir " << std::endl;
+        //std::cout << p.pos << " position " << p.dir << " dir " << std::endl;
         Transporter::determineMaterial(p);
         if (!p.is_alive) break;
         double sig_tot = Geometry::getXSvRegion(current_region).sig_s + Geometry::getXSvRegion(current_region).sig_a;
@@ -101,6 +108,7 @@ void Transporter::moveParticle(Particle& p, double dx, double particles){
         p.pos = p.pos < left_bound && p.dir < 0 ? left_bound - 0.000001 : p.pos;
         p.pos = p.pos > right_bound && p.dir > 0 ? right_bound + 0.000001 : p.pos;
             
+        //std::cout << prev_pos << " -> " << p.pos << std::endl;
         Tally::pathLengthTally(p.pos, prev_pos, p.dir, p.wgt, particles);
         int old_region = current_region;
         Transporter::determineMaterial(p);
@@ -108,8 +116,9 @@ void Transporter::moveParticle(Particle& p, double dx, double particles){
         if (current_region != old_region) continue;
         // At this new location, does it experience a collision?
         Transporter::collision(p);
-        Transporter::russianRoulette(p);
-        // p.is_alive = false;
+        if (Tally::getTallyType()) {
+            Transporter::russianRoulette(p);
+        }
     }
 
 }
@@ -138,12 +147,19 @@ void Transporter::collision(Particle& p){
     else if(rand_p < Pfission){
         //Do fission
         Transporter::fissionNeutrons(p);
-        p.wgt *= 1-(Pfission-Pscatter);
+        if (Tally::getTallyType()) {
+            p.wgt *= 1 - (Pfission - Pscatter);
+        }
       //  std::cout << "fissioning " << std::endl;
     }
     else{
         // Capture
-        p.wgt *= 1- Pcapt;
+        if (Tally::getTallyType()) {
+            p.wgt *= 1 - Pcapt;
+        }
+        else {
+            p.is_alive = false;
+        }
       //  std::cout << "captured " << std::endl;
     }
 }
@@ -153,15 +169,8 @@ void Transporter::fissionNeutrons(Particle& p){
     double k_score = p.wgt * Geometry::getXSvRegion(current_region).v_sig_f / Geometry::getXSvRegion(current_region).sig_f;
 
     //How many neutrons do we produce?
-    int n_new = 0;
-    // Is a flux based fixed source problem
-    if(Tally::getTallyType()){
-        n_new = int(std::abs(k_score) + RNG_GEN::rand());
-    }
-    // Else is a eigenvalue problem
-    else{
+    int n_new = int(std::abs(k_score) + RNG_GEN::rand());
 
-    }
 
     // Make all new particles
     for(int i = 0; i < n_new; i++){
@@ -173,6 +182,12 @@ void Transporter::fissionNeutrons(Particle& p){
                     p.wgt,
                     true};
         // Save particle as fission particle.
-        Bank::addParticle(p_d);
+        if (Tally::getTallyType()) {
+            Bank::addParticle(p_d);
+        }
+        else {
+            //std::cout << "Particle born" << std::endl;
+            Bank::addNextPart(p_d);
+        }
     }
 }

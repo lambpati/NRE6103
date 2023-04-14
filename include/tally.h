@@ -15,6 +15,9 @@ private:
     inline static double w;
     inline static std::vector<std::pair<double, double>> pathlengths;
 
+    inline static std::vector<double> std_dev;
+    inline static std::vector<double> mean_flux;
+
 public:
     //Methods
     Tally() = default;
@@ -24,6 +27,7 @@ public:
     //Getters
     static const bool getTallyType() { return flux; };
     static const std::vector<std::pair<double,double>> getPathlengths(){ return pathlengths; };
+    static std::pair<double, double> getMeanVariance(const std::vector<std::pair<double, double>>& vect);
 
     //Setters
     static void setTallyType(bool f) { flux = f; };

@@ -4,6 +4,7 @@
 
 #include "../include/bank.h"
 #include "../include/particle.h"
+#include "../include/tally.h"
 
 class Boundaries{
     private:

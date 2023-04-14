@@ -38,3 +38,25 @@ void Tally::pathLengthTally(double pos, double prev_pos, double dir, double weig
     }
 
 }
+
+std::pair<double, double> Tally::getMeanVariance(const std::vector<std::pair<double, double>>& vect) {
+    static std::vector<double> vec;
+    for (auto& e : vect) {
+        vec.push_back(e.second);
+    }
+    double mean = 0, M2 = 0, variance = 0;
+
+    size_t n = vec.size();
+    for (size_t i = 0; i < n; ++i) {
+        double delta = vec[i] - mean;
+        mean += delta / (i + 1);
+        M2 += delta * (vec[i] - mean);
+        variance = M2 / (i + 1);
+        if (i >= 2) {
+            mean_flux.push_back(mean);
+            std_dev.push_back(variance);
+        }
+    }
+
+    return std::make_pair(mean, variance);
+}
