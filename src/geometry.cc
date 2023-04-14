@@ -15,10 +15,12 @@ void Geometry::setGeometry(int loc){
     // If vector is smaller than location, push_back (push_back faster than insert)
     if(loc > data.size()){
         data.push_back(s);
+        regions.push_back(loc);
     }
     // Else put in at location
     else{
         data.insert(data.begin() + loc, s);
+        regions.insert(regions.begin() + loc, loc);
     }
 
     //Set global range

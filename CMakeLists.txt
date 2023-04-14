@@ -16,11 +16,8 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
   set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 endif()
 
-IF (WIN32)
-  set(CMAKE_EXE_LINKER_FLAGS "-static")
-ELSE()
-
-ENDIF()
+SET(CMAKE_CXX_FLAGS "-O2")
+SET(CMAKE_C_FLAGS "-O2")
 
 include_directories(src)
 include_directories(include)

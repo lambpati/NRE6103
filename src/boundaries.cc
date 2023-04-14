@@ -1,5 +1,7 @@
 #include "../include/boundaries.h"
 
+#include <iostream>
+
 void Boundaries::setLeft(char l){
       if(l == 'V'){
         bounds.first = true;
@@ -32,15 +34,19 @@ void Boundaries::vaccuum(Particle& p){
 
 void Boundaries::determineBehavior(Particle& p, bool side){
     if(side && bounds.second){
+      //  std::cout << "Vaccuum RHS" << std::endl;
         Boundaries::vaccuum(p);
     }
     else if(side && !bounds.second){
+     //   std::cout << "Reflecting RHS" << std::endl;
         Boundaries::reflect(p);
     }
     else if(!side && bounds.first) {
+       // std::cout << "Vaccuum LHS" << std::endl;
         Boundaries::vaccuum(p);
     }
     else{
+      //  std::cout << "Reflect LHS" << std::endl;
         Boundaries::reflect(p);
     }
 }
