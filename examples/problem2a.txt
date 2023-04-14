@@ -4,3 +4,19 @@
 // left external surface, and vacuum BC on the right external surface.
 // Calculate the Eigenvalue and Flux distribution in this problem
 
+// solution type
+EIGEN
+
+//boundaries (SPECULAR vs VACUUM)
+BOUNDARIES
+LEFT SPECULAR
+RIGHT VACUUM
+
+//data (REGION SIG_A SIG_S SIG_F V_SIG_F S X_MIN X_MAX)
+DATA
+1 0.5 1.5 0 0 0 0 1.158
+2 0.2 1.2 0.1 0.25 0 1.158 3.321
+3 0.3 0.7 0.2 0.36 0 3.321 6.642
+4 0.3 0.7 0.2 0.36 0 6.642 9.963
+5 0.2 1.2 0.1 0.25 0 9.963 13.284
+6 0.5 1.5 0 0 0 13.284 16.605

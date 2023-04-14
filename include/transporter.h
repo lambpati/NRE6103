@@ -28,7 +28,7 @@ class Transporter {
         //Methods
         Transporter() = default;
 
-        void initParticles(double dx);
+        void initParticles(double dx, int i=0);
 
         void russianRoulette(Particle& p);
         void collision(Particle& p);

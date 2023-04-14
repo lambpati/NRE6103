@@ -48,7 +48,7 @@ void ReadProgram::populateGeometry(){
             Geometry::setXS(XS_Data);
             // Dumb fix but..
             //Check for uniqueness between key and values at last XS_Data point and hkey. If they match, the file ended
-            if (hkey != (int)XS_Data[6]) {
+            if (hkey != (int)XS_Data[6] || hkey != (int)XS_Data[5]) {
                 Geometry::setGeometry(hkey);
             }
             else {

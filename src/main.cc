@@ -15,7 +15,11 @@ int main(int argc, char const *argv[]){
     // TO DO add these parameters to a readable input form
     const int dx = 1000;
     const double particles = 1000000;
+    const int batches = 100;
+    const int inactive = 5;
     RNG_GEN::setSeed(896654);
+
+
 
 
     // Print intro to 1D solver
@@ -41,11 +45,11 @@ int main(int argc, char const *argv[]){
 
     // Make particles
     for(int i = 0; i < particles; i++){
-       transporter.initParticles(dx);
+       transporter.initParticles(dx,i);
     }
     std::cout << "Bank size: " << Bank::getMeshBank().size() << std::endl;
 
-
+if(Tally::getTallyType()){
     int cnt = 0;
     while(!Bank::getMeshBank().empty()){
         for(auto& e : Bank::getMeshBank()){
@@ -61,9 +65,13 @@ int main(int argc, char const *argv[]){
         }
         std::cout << "Bank size after: " << Bank::getMeshBank().size() << std::endl;
     }
-
-    auto end = std::chrono::high_resolution_clock::now();
     WriteProgram::writeToOutput(Tally::getPathlengths());
+}
+else{
+    Bank::createCDF(Bank::getMeshBank());
+    //TODO Continue
+}
+    auto end = std::chrono::high_resolution_clock::now();
     double elapsed_time = std::chrono::duration<double>(end-start).count();
     std::cout << "Finished Computation in " << elapsed_time << " seconds. Please look at the output.csv file." << std::endl;
 

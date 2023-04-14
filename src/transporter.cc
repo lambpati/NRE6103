@@ -4,7 +4,7 @@
 //TESTING
 #include <iostream>
 
-void Transporter::initParticles(double dx){
+void Transporter::initParticles(double dx, int i){
     //Make new particle
     Particle p;
     // If flux fixed source problem
@@ -21,10 +21,19 @@ void Transporter::initParticles(double dx){
     }
     // Else is eigenvalue problem
     else{
-
+        current_region = i;
+        // Populate bank with v_sig_f as initial guess
+        p.pos = Geometry::getXS(i).v_sig_f;
+        p.dir = 1-2*RNG_GEN::rand();
+        // Set p.wgt to 1
+        p.wgt = 1;
+        // Set to is_alive = true
+        p.is_alive = true;
     }
+    
     Bank::addParticle(p);
 }
+
 void Transporter::russianRoulette(Particle& p){
     //Roulettes weight of the particle 
     if (p.wgt < weight_cutoff) {
