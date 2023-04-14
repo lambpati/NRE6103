@@ -18,7 +18,7 @@ class Bank{
         static void addParticle(Particle& p);
         static void killParticles(Particle& p);
         //Getters
-        static const std::vector<Particle> getMeshBank(){return mesh_bank; };
+        static std::vector<Particle> getMeshBank(){return mesh_bank; };
         //Setters
         
 

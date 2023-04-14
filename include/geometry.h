@@ -33,7 +33,7 @@ class Geometry{
 
 
         //Getters
-        static const std::vector<std::pair<int, CrossSections>> getGeometry() { return data; };
+        static std::vector<std::pair<int, CrossSections>> getGeometry() { return data; };
         static const int getRegion(int loc) { return data.at(loc).first; };
         static const CrossSections getXS(int loc) { return data.at(loc).second; };
         // Region indexes at 1, loc indexes at 0 so subtract 1 from r to get loc

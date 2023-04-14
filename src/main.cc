@@ -44,17 +44,17 @@ int main(int argc, char const *argv[]){
        transporter.initParticles(dx);
     }
     std::cout << "Bank size: " << Bank::getMeshBank().size() << std::endl;
+
+
     int cnt = 0;
     while(!Bank::getMeshBank().empty()){
-        for(auto e : Bank::getMeshBank()){
+        for(auto& e : Bank::getMeshBank()){
             if (++cnt % 10000 == 0) {
                 auto end = std::chrono::high_resolution_clock::now();
                 double elapsed_time = std::chrono::duration<double>(end - start).count();
                 std::cout << "Elapsed time: " << elapsed_time << " seconds." << std::endl;
             }
             transporter.moveParticle(e, dx, particles);
-            //std::cout << "New particle " << std::endl;
-           // std::cout << "Bank size: " << Bank::getMeshBank().size() << std::endl;
         }
         if (Bank::getMeshBank().size() == 1) {
             break;
@@ -62,11 +62,8 @@ int main(int argc, char const *argv[]){
         std::cout << "Bank size after: " << Bank::getMeshBank().size() << std::endl;
     }
 
-    //Tally::calculateFlux(particles, dx);
     auto end = std::chrono::high_resolution_clock::now();
     WriteProgram::writeToOutput(Tally::getPathlengths());
-    //WriteProgram::writeToOutput(Tally::getCollisions());
-    //WriteProgram::writeToOutput(Tally::getCollTally(),Tally::getMesh());
     double elapsed_time = std::chrono::duration<double>(end-start).count();
     std::cout << "Finished Computation in " << elapsed_time << " seconds. Please look at the output.csv file." << std::endl;
 

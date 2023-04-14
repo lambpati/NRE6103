@@ -55,12 +55,12 @@ void Transporter::determineMaterial(Particle& p){
     }
     else{
         //std::cout << "in else" << std::endl;
-        for(int i = 0; i < Geometry::getGeometry().size(); i++){
+        for(auto& i : Geometry::getGeometry()){
            // std::cout << "i is " << i << std::endl;
-            if(p.pos < Geometry::getXS(i).X_max){
-                current_region = i;
-                left_bound = Geometry::getXS(i).X_min;
-                right_bound = Geometry::getXS(i).X_max;
+            if(p.pos < i.second.X_max){
+                current_region = i.first-1;
+                left_bound = i.second.X_min;
+                right_bound = i.second.X_max;
                 break;
             }
         }
@@ -68,7 +68,6 @@ void Transporter::determineMaterial(Particle& p){
 }
 
 void Transporter::moveParticle(Particle& p, double dx, double particles){
-    int cnt = 0;
     while(p.is_alive){
         double prev_pos = p.pos;
        // std::cout << p.pos << " position " << p.dir << " dir " << std::endl;
