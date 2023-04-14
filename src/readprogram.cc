@@ -94,6 +94,7 @@ void ReadProgram::read(){
        while (!file.eof()) {
            ReadProgram::parseFile();
        }
+       //Geometry::testGeom();
        file.close();
    }
    catch(const std::ifstream::failure& e){
