@@ -20,6 +20,7 @@ class Bank{
         Bank() = default;
 
         static void addParticle(Particle& p);
+        static void addNextPart(Particle& p);
         static void initBanks(int res);
         static void killParticles(Particle& p);
         static void createCDF(std::vector<Particle> mesh);
@@ -27,8 +28,8 @@ class Bank{
         static std::vector<Particle> getMeshBank(){return mesh_bank; };
         static double getSum(){ return sum; };
         //Setters
-        static void setMesh(int i, double val);
-        static void setNextGen(int i, double val);
+        static void setMesh(int i, Particle& p);
+        static void setNextGen(int i, Particle& p);
         
 
 

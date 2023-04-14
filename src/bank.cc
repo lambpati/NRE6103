@@ -26,10 +26,10 @@ void Bank::createCDF(std::vector<Particle> mesh){
     }
 }
 
-void Bank::setMesh(int i, double val){
-    mesh_bank.at(i) = val;
+void Bank::setMesh(int i, Particle& p){
+    mesh_bank.at(i) = p;
 }
 
-void Bank::setNextGen(int i, double val){
-    next_gen.at(i) = val;
+void Bank::setNextGen(int i, Particle& p){
+    next_gen.at(i) = p;
 }
