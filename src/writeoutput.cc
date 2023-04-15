@@ -1,22 +1,6 @@
 #include "../include/writeoutput.h"
 
 
-// If C++ 20 or above, use conditional formatting
-#if (__cplusplus == 202002L)
-#include <format>
-void WriteProgram::prettyPrintGeometry() {
-    auto dat = Geometry::getGeometry();
-    std::cout << "Constructed geometry according to below NOTE MAKE SURE SCREEN IS BIG ENOUGH TO SHOW TABLE CORRECTLY" << std::endl;
-    std::cout << std::format("|{:^9}|{:^9}|{:^9}|{:^9}|{:^9}|{:^9}|{:^9}|{:^9}|\n", "Region", "Sigma A","Sigma S", "Sigma F", "V Sig F", "S", "X min", "X max");
-    for (auto &d : dat) {
-       int reg = d.first;
-       CrossSections xs = d.second;
-       std::cout << std::format("|{:^9}|{:^9}|{:^9}|{:^9}|{:^9}|{:^9}|{:^9}|{:^9}|\n", reg, xs.sig_a, xs.sig_s, xs.sig_f, xs.v_sig_f, xs.s, xs.X_min, xs.X_max);
-
-     }
-}
-// Else use regular formatting
-#else
 void WriteProgram::prettyPrintGeometry() {
     auto dat = Geometry::getGeometry();
     std::cout << "Constructed geometry according to below NOTE MAKE SURE SCREEN IS BIG ENOUGH TO SHOW TABLE CORRECTLY" << std::endl;
@@ -28,7 +12,6 @@ void WriteProgram::prettyPrintGeometry() {
 
      }
 }
-#endif
 
 
 std::string WriteProgram::output = "output.csv";
