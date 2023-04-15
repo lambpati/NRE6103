@@ -20,7 +20,7 @@ void Tally::pathLengthTally(double pos, double prev_pos, double dir, double weig
         // Normalize per bin / particle_count * source_strength * source_width 
         // Offset for center bit
 
-        //TODO MULTIPLY BY WIDTH OF 
+        //TODO MULTIPLY BY WIDTH OF GEOMETRY CONTAINING I AND I+1
         //inc = std::abs(weight*dist)/(particles*w)* Geometry::getXS(2).s *  (Geometry::getXS(2).X_max-Geometry::getXS(2).X_min);
         //inc_2 = std::abs(weight*dist)/(particles*w) * Geometry::getXS(2).s *  (Geometry::getXS(2).X_max-Geometry::getXS(2).X_min);
         inc = std::abs(weight / dir ) / particles * Geometry::getXS(2).s * 2 * (Geometry::getXS(2).X_max-Geometry::getXS(2).X_min);
