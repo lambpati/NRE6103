@@ -17,7 +17,7 @@ int main(int argc, char const *argv[]){
 
     // TO DO add these parameters to a readable input form
     const int dx = 1000;
-    const double particles = 100000;
+    const double particles = 1000000;
     const int batches = 100;
     const int inactive = 5;
 
