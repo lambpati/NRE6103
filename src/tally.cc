@@ -18,7 +18,7 @@ void Tally::pathLengthTally(double pos, double prev_pos, double dir, double weig
     if(flux) {
         double dist = rite_pos - left_pos;
         inc = std::abs(weight / dir) / particles * Geometry::getXS(2).s *  (Geometry::getXS(2).X_max-Geometry::getXS(2).X_min);
-        inc_2 = std::abs(weight / dir * dist / w) / particles * Geometry::getXS(2).s *  (Geometry::getXS(2).X_max-Geometry::getXS(2).X_min);
+        inc_2 = std::abs(weight / dir * dist / w) / particles * Geometry::getXS(2).s *  (Geometry::getXS(2).X_max-Geometry::getXS(2).X_min) * 2;
     }
     else{
         inc = 1;
@@ -39,24 +39,17 @@ void Tally::pathLengthTally(double pos, double prev_pos, double dir, double weig
 
 }
 
-std::pair<double, double> Tally::getMeanVariance(const std::vector<std::pair<double, double>>& vect) {
-    static std::vector<double> vec;
-    for (auto& e : vect) {
-        vec.push_back(e.second);
-    }
+void Tally::calculateMeanVariance(const std::vector<std::pair<double, double>>& vect) {
     double mean = 0, M2 = 0, variance = 0;
-
-    size_t n = vec.size();
-    for (size_t i = 0; i < n; ++i) {
-        double delta = vec[i] - mean;
+    for (size_t i = 0; i < vect.size(); ++i) {
+        double delta = vect.at(i).second - mean;
         mean += delta / (i + 1);
-        M2 += delta * (vec[i] - mean);
+        M2 += delta * (vect.at(i).second - mean);
         variance = M2 / (i + 1);
         if (i >= 2) {
-            mean_flux.push_back(mean);
-            std_dev.push_back(variance);
+            
         }
     }
-
-    return std::make_pair(mean, variance);
+    mean_flux.push_back(mean);
+    std_dev.push_back(variance);
 }

@@ -24,10 +24,12 @@ public:
 
     static void makeMesh(int res);
     static void pathLengthTally(double pos, double prev_pos, double dir, double weight, double particles);
+    static void calculateMeanVariance(const std::vector<std::pair<double, double>>& vect);
     //Getters
     static const bool getTallyType() { return flux; };
     static const std::vector<std::pair<double,double>> getPathlengths(){ return pathlengths; };
-    static std::pair<double, double> getMeanVariance(const std::vector<std::pair<double, double>>& vect);
+    static const std::vector<double> getMean(){ return mean_flux; };
+    static const std::vector <double> getVariance() { return std_dev; };
 
     //Setters
     static void setTallyType(bool f) { flux = f; };

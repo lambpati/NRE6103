@@ -11,18 +11,23 @@
 #include "../include/transporter.h"
 #include "../include/geometry.h"
 #include "../include/rng_gen.h"
+#include "../include/timer.h"
 
 int main(int argc, char const *argv[]){
 
     // TO DO add these parameters to a readable input form
     const int dx = 1000;
-    const double particles = 100;
+    const double particles = 100000;
     const int batches = 100;
     const int inactive = 5;
 
     RNG_GEN::setSeed(896654);
 
     std::vector<double> k_eff;
+    
+    double Avg_K = NAN;
+    
+    unsigned long long timed=0;
 
 
 
@@ -47,7 +52,8 @@ int main(int argc, char const *argv[]){
     Tally::makeMesh(dx);
 
     std::cout << "System timestamp: " << __TIMESTAMP__ << std::endl;
-    auto start = std::chrono::high_resolution_clock::now();
+    //std::chrono::steady_clock::time_point start = std::chrono::steady_clock::now();
+    timer t;
 
     // Make particles
     for(int i = 0; i < particles; i++){
@@ -57,13 +63,12 @@ int main(int argc, char const *argv[]){
     std::cout << "Bank size: " << Bank::getMeshBank().size() << std::endl;
 
 if(Tally::getTallyType()){
-    int cnt = 0;
     while(!Bank::getMeshBank().empty()){
         for(auto& e : Bank::getMeshBank()){
-            if (++cnt % 10000 == 0) {
-                auto end = std::chrono::high_resolution_clock::now();
-                double elapsed_time = std::chrono::duration<double>(end - start).count();
-                std::cout << "Elapsed time: " << elapsed_time << " seconds." << std::endl;
+            if (t.seconds_elapsed() % 30 == 0 && t.seconds_elapsed() != 0) {
+                timed += t.seconds_elapsed();
+                t.reset();
+                std::cout << "Elapsed time: " << timed << " seconds." << std::endl;
             }
             transporter.moveParticle(e, dx, particles);
         }
@@ -71,47 +76,49 @@ if(Tally::getTallyType()){
             break;
         }
         std::cout << "Bank size after: " << Bank::getMeshBank().size() << std::endl;
-        Tally::getMeanVariance(Tally::getPathlengths());
+        //Tally::calculateMeanVariance(Tally::getPathlengths());
     }
-    WriteProgram::writeToOutput(Tally::getPathlengths());
 }
 else {
-    //Bank::createCDF(Bank::getMeshBank());
-    //TODO Continue
-    int cnt = 0;
-    int v = 0;
     for (auto& e : Bank::getMeshBank()) {
-        if (++cnt % 1000 == 0) {
-            auto end = std::chrono::high_resolution_clock::now();
-            double elapsed_time = std::chrono::duration<double>(end - start).count();
-            std::cout << "Elapsed time: " << elapsed_time << " seconds." << std::endl;
-        }
+            if (t.seconds_elapsed() % 30 == 0 && t.seconds_elapsed() != 0) {
+                timed += t.seconds_elapsed();
+                t.reset();
+                std::cout << "Elapsed time: " << timed << " seconds." << std::endl;
+            }
         transporter.moveParticle(e, dx, particles);
-        //std::cout << "Moving particle " << e.pos << std::endl;
-        //std::cout << "Next Bank size: " << Bank::getNextBank().size() << std::endl;
     }
 
     for (int i = 0; i < batches; i++) {
-        std::cout << "Bank size after: " << Bank::getMeshBank().size() << std::endl;
-        std::cout << "Next Bank size: " << Bank::getNextBank().size() << std::endl;
-        k_eff.push_back(Bank::getNextBank().size() / Bank::getMeshBank().size());
-        std::cout << "K_eff: " << k_eff.back() << std::endl;
+        std::cout << "On generation " << i << std::endl;
+        k_eff.push_back((double)Bank::getNextBank().size() / (double)Bank::getMeshBank().size());
+        std::cout << "K is " << k_eff.back() << std::endl;
         Bank::initBanks();
-        //std::cout << "Next Bank size: " << Bank::getNextBank().size() << std::endl;
-        //std::cout << "Current Bank size: " << Bank::getMeshBank().size() << std::endl;
-        for (auto& e : Bank::getMeshBank()) {
-            //double sim = std::floor(1. / k_eff.back() * RNG_GEN::rand());
-            //std::cout << "sim " << sim << std::endl;
-            //for (int j = 0; j < sim; j++) {
-                //Particle p = e;
-                //p.dir = 1 - 2 * RNG_GEN::rand();
-                transporter.moveParticle(e, dx, particles);
-            //}
+        for (int j = 0; j < particles; j++) {
+            // Choose  randomly from uniform distribution of fission particle bank to allow to propogate
+            int index = std::floor(RNG_GEN::rand()*Bank::getMeshBank().size());
+            Particle e = Bank::getMeshBank().at(index);
+            e.dir = 1 - 2 * RNG_GEN::rand();
+            if (t.seconds_elapsed() % 30 == 0 && t.seconds_elapsed() != 0) {
+                timed += t.seconds_elapsed();
+                t.reset();
+                std::cout << "Elapsed time: " << timed << " seconds." << std::endl;
+            }
+            transporter.moveParticle(e, dx, particles);
         }
     }
+    for(int i = 0; i < inactive; i++){
+        // Pop front inactive batches
+        k_eff.erase(k_eff.begin());
+    }
+    // Average K_eff
+    Avg_K = std::reduce(k_eff.begin(), k_eff.end())/k_eff.size();
+    std::cout << "Calculated K_eff: " << Avg_K << std::endl;
 }
-    auto end = std::chrono::high_resolution_clock::now();
-    double elapsed_time = std::chrono::duration<double>(end-start).count();
-    std::cout << "Finished Computation in " << elapsed_time << " seconds. Please look at the output.csv file." << std::endl;
+    Tally::calculateMeanVariance(Tally::getPathlengths());
+    WriteProgram::writeToStatistics(Tally::getMean(), Tally::getVariance());
+    WriteProgram::writeToOutput(Tally::getPathlengths(), Avg_K);
+    timed += t.seconds_elapsed();
+    std::cout << "Finished Computation in " << timed << " seconds. Please look at the output.csv and statistics.csv files." << std::endl;
 
 }

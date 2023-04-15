@@ -90,7 +90,7 @@ void Transporter::moveParticle(Particle& p, double dx, double particles){
         Transporter::determineMaterial(p);
         if (!p.is_alive) break;
         double sig_tot = Geometry::getXSvRegion(current_region).sig_s + Geometry::getXSvRegion(current_region).sig_a;
-        //std::cout << "sig_tot in region " << current_region << " is " << sig_tot << std::endl;
+        //std::cout << "sig_tot in region " << current_region+1 << " is " << sig_tot << std::endl;
         if (sig_tot == 0.) {
             if(p.dir < 0.){
                 //current_region--;
@@ -112,7 +112,9 @@ void Transporter::moveParticle(Particle& p, double dx, double particles){
         Tally::pathLengthTally(p.pos, prev_pos, p.dir, p.wgt, particles);
         int old_region = current_region;
         Transporter::determineMaterial(p);
-
+        if(!Tally::getTallyType()){
+            if(!p.is_alive) break;
+        }
         if (current_region != old_region) continue;
         // At this new location, does it experience a collision?
         Transporter::collision(p);
@@ -149,6 +151,9 @@ void Transporter::collision(Particle& p){
         Transporter::fissionNeutrons(p);
         if (Tally::getTallyType()) {
             p.wgt *= 1 - (Pfission - Pscatter);
+        }
+        else{
+           // p.is_alive = false;
         }
       //  std::cout << "fissioning " << std::endl;
     }

@@ -32,6 +32,7 @@ void WriteProgram::prettyPrintGeometry() {
 
 
 std::string WriteProgram::output = "output.csv";
+std::string WriteProgram::mean = "statistics.csv";
 std::ofstream WriteProgram::out;
 
 void WriteProgram::prettyPrintBoundaries() {
@@ -60,12 +61,11 @@ void WriteProgram::writeToOutput(std::vector<double> val, std::vector<double> po
      }
      out.close();
 }
-
-// Writes array values val into a csv file known as "output.csv"
-void WriteProgram::writeToOutput(std::vector<int> val, std::vector<double> pos){
-       out.open(output, std::ios_base::trunc);
+// Writes array values val into a csv file known as "statistics.csv"
+void WriteProgram::writeToStatistics(std::vector<double> val, std::vector<double> pos){
+       out.open(mean, std::ios_base::trunc);
        // Header
-       out << "Position,Collisions \n";
+       out << "Mean,Variance \n";
        for(int i=0; i < val.size(); i++){
         out << pos.at(i) << "," << val.at(i) << "\n";
 //       out << '\n';
@@ -74,11 +74,14 @@ void WriteProgram::writeToOutput(std::vector<int> val, std::vector<double> pos){
 }
 
 // Writes array values val into a csv file known as "output.csv"
-void WriteProgram::writeToOutput(std::vector<std::pair<double,double>> val){
+void WriteProgram::writeToOutput(std::vector<std::pair<double,double>> val, double K){
     //TODO Write output to txt in specified format
 //   // Results stored in examples folder "output.csv"
        out.open(output, std::ios_base::trunc);
        // Header
+       if(!std::isnan(K)){
+        out << "K_eff is " << K << "\n";
+       }
        out << "Position,Flux \n";
        for(auto &e : val){
         out << e.first << "," << e.second << "\n";
