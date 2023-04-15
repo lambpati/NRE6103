@@ -17,7 +17,7 @@ int main(int argc, char const *argv[]){
 
     // TO DO add these parameters to a readable input form
     const int dx = 1000;
-    const double particles = 1000000;
+    const double particles = 10000;
     const int batches = 100;
     const int inactive = 5;
 
@@ -75,7 +75,7 @@ if(Tally::getTallyType()){
         if (Bank::getMeshBank().size() == 1) {
             break;
         }
-        std::cout << "Bank size after: " << Bank::getMeshBank().size() << std::endl;
+       // std::cout << "Bank size after: " << Bank::getMeshBank().size() << std::endl;
         //Tally::calculateMeanVariance(Tally::getPathlengths());
     }
 }
@@ -90,9 +90,9 @@ else {
     }
 
     for (int i = 0; i < batches; i++) {
-        std::cout << "On generation " << i << std::endl;
+       // std::cout << "On generation " << i << std::endl;
         k_eff.push_back((double)Bank::getNextBank().size() / (double)Bank::getMeshBank().size());
-        std::cout << "K is " << k_eff.back() << std::endl;
+       // std::cout << "K is " << k_eff.back() << std::endl;
         Bank::initBanks();
         for (int j = 0; j < particles; j++) {
             // Choose  randomly from uniform distribution of fission particle bank to allow to propogate

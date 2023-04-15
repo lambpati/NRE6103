@@ -16,17 +16,22 @@ void Tally::pathLengthTally(double pos, double prev_pos, double dir, double weig
     double left_pos = std::min(prev_pos, pos);
     double rite_pos = std::max(prev_pos, pos);
     if(flux) {
+        // Normalize per bin / particle_count * source_strength * source_width 
+        // Offset for center bit
         double dist = rite_pos - left_pos;
         inc = std::abs(weight / dir) / particles * Geometry::getXS(2).s *  (Geometry::getXS(2).X_max-Geometry::getXS(2).X_min);
         inc_2 = std::abs(weight / dir * dist / w) / particles * Geometry::getXS(2).s *  (Geometry::getXS(2).X_max-Geometry::getXS(2).X_min) * 2;
     }
     else{
-        inc = 1;
-        inc_2 = 1;
+        // Normalize per bin / particle_count * geometry_range * types of materials
+        // Offset for center bit
+        double dist = rite_pos - left_pos;
+        inc = std::abs(1 / dir) / (particles* Geometry::getMax()-Geometry::getMin() * 3); 
+        inc_2 = std::abs(1 / dir * dist) / (particles* Geometry::getMax()-Geometry::getMin() * w * 6);
+        // inc = std::abs(1 / dir) / (particles * 6 * 2 *(Geometry::getXS(2).X_max-Geometry::getXS(2).X_min));
+        // inc_2 = std::abs(1 / dir * dist / w) / (particles *  6 * 2 * (Geometry::getXS(2).X_max-Geometry::getXS(2).X_min) * 2);
     }
     //std::cout << prev_pos << " to " << pos << ". Dir: " << dir << std::endl;
-
-    // Normalize per bin / particle_count * source_strength * source_width
 
     for(int i = 0; i < pathlengths.size() - 1; i++){
         if(left_pos <= pathlengths.at(i).first && rite_pos >= pathlengths.at(i+1).first){
