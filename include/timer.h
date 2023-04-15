@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <chrono>
 
 struct timer{
     typedef std::chrono::steady_clock clock ;
