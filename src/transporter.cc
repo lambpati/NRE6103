@@ -22,7 +22,6 @@ void Transporter::initParticles(double dx, double part, int i){
     // Else is eigenvalue problem
     else{
         current_region = Geometry::getRegion(2);
-        Transporter::detDist(part,i);
         // Populate bank with v_sig_f as initial guess
         p.pos = Transporter::detDist(part, i);
         //std::cout << p.pos << std::endl;
