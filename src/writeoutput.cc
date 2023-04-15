@@ -2,7 +2,7 @@
 
 
 // If C++ 20 or above, use conditional formatting
-#if (__cplusplus >= 202002L)
+#if (__cplusplus == 202002L)
 #include <format>
 void WriteProgram::prettyPrintGeometry() {
     auto dat = Geometry::getGeometry();
