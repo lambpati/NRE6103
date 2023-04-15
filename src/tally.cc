@@ -11,21 +11,25 @@ void Tally::makeMesh(int res){
 }
 
 void Tally::pathLengthTally(double pos, double prev_pos, double dir, double weight, double particles) {
-    double inc;
-    double inc_2;
+    double inc = 0;
+    double inc_2 = 0;
     double left_pos = std::min(prev_pos, pos);
     double rite_pos = std::max(prev_pos, pos);
+    double dist = rite_pos - left_pos;
     if(flux) {
         // Normalize per bin / particle_count * source_strength * source_width 
         // Offset for center bit
-        double dist = rite_pos - left_pos;
-        inc = std::abs(weight / dir) / particles * Geometry::getXS(2).s *  (Geometry::getXS(2).X_max-Geometry::getXS(2).X_min);
-        inc_2 = std::abs(weight / dir * dist / w) / particles * Geometry::getXS(2).s *  (Geometry::getXS(2).X_max-Geometry::getXS(2).X_min) * 2;
+
+        //TODO MULTIPLY BY WIDTH OF 
+        //inc = std::abs(weight*dist)/(particles*w)* Geometry::getXS(2).s *  (Geometry::getXS(2).X_max-Geometry::getXS(2).X_min);
+        //inc_2 = std::abs(weight*dist)/(particles*w) * Geometry::getXS(2).s *  (Geometry::getXS(2).X_max-Geometry::getXS(2).X_min);
+        inc = std::abs(weight / dir ) / particles * Geometry::getXS(2).s * 2 * (Geometry::getXS(2).X_max-Geometry::getXS(2).X_min);
+        inc_2 = std::abs(weight / dir * dist / w) / particles * 2 * Geometry::getXS(2).s *  (Geometry::getXS(2).X_max-Geometry::getXS(2).X_min);
     }
     else{
+        // flux = weight * tracklength /(particles*w*energy_width*angular_interval_width)
         // Normalize per bin / particle_count * geometry_range * types of materials
         // Offset for center bit
-        double dist = rite_pos - left_pos;
         inc = std::abs(1 / dir) / (particles* Geometry::getMax()-Geometry::getMin() * 3); 
         inc_2 = std::abs(1 / dir * dist) / (particles* Geometry::getMax()-Geometry::getMin() * w * 6);
         // inc = std::abs(1 / dir) / (particles * 6 * 2 *(Geometry::getXS(2).X_max-Geometry::getXS(2).X_min));

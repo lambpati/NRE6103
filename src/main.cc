@@ -17,7 +17,7 @@ int main(int argc, char const *argv[]){
 
     // TO DO add these parameters to a readable input form
     const int dx = 1000;
-    const double particles = 10000;
+    const double particles = 1000000;//10000;
     const int batches = 100;
     const int inactive = 5;
 
@@ -75,8 +75,7 @@ if(Tally::getTallyType()){
         if (Bank::getMeshBank().size() == 1) {
             break;
         }
-       // std::cout << "Bank size after: " << Bank::getMeshBank().size() << std::endl;
-        //Tally::calculateMeanVariance(Tally::getPathlengths());
+        //std::cout << "Bank size after: " << Bank::getMeshBank().size() << std::endl;
     }
 }
 else {
