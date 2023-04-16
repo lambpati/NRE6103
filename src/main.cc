@@ -114,9 +114,10 @@ else {
     Avg_K = std::reduce(k_eff.begin(), k_eff.end())/k_eff.size();
     std::cout << "Calculated K_eff: " << Avg_K << std::endl;
 }
-    Tally::calculateMeanVariance(Tally::getPathlengths());
+    Tally::calculateFlux(dx);
+    Tally::calculateMeanVariance(Tally::getFlux());
     WriteProgram::writeToStatistics(Tally::getMean(), Tally::getVariance());
-    WriteProgram::writeToOutput(Tally::getPathlengths(), Avg_K);
+    WriteProgram::writeToOutput(Tally::getFlux(), Avg_K);
     timed += t.seconds_elapsed();
     std::cout << "Finished Computation in " << timed << " seconds. Please look at the output.csv and statistics.csv files." << std::endl;
 

@@ -82,6 +82,21 @@ void Transporter::determineMaterial(Particle& p){
     }
 }
 
+
+int Transporter::determineMaterial(double position){
+    double reg = 0;
+        for(auto& i : Geometry::getGeometry()){
+           // std::cout << "i is " << i << std::endl;
+            if(position < i.second.X_max){
+                reg = i.first-1;
+                left_bound = i.second.X_min;
+                right_bound = i.second.X_max;
+                break;
+            }
+        }
+        return reg;
+    }
+
 void Transporter::moveParticle(Particle& p, double dx, double particles){
     while(p.is_alive){
         double prev_pos = p.pos;
@@ -108,7 +123,7 @@ void Transporter::moveParticle(Particle& p, double dx, double particles){
         p.pos = p.pos > right_bound && p.dir > 0 ? right_bound + 0.000001 : p.pos;
             
         //std::cout << prev_pos << " -> " << p.pos << std::endl;
-        Tally::pathLengthTally(p.pos, prev_pos, p.dir, p.wgt, particles);
+        Tally::pathLengthTally(p.pos, prev_pos, p.dir, p.wgt, particles, sig_tot);
         int old_region = current_region;
         Transporter::determineMaterial(p);
         if(!Tally::getTallyType()){

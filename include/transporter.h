@@ -38,10 +38,11 @@ class Transporter {
         void collision(Particle& p);
         void moveParticle(Particle& p, double dx, double particles);
         void determineMaterial(Particle& p);
+        int determineMaterial(double position);
         void fissionNeutrons(Particle& p);
 
         //Getters
-
+        
 
         //Setters
 };
