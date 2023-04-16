@@ -66,7 +66,7 @@ void Tally::calculateFlux(int res){
             flux_vec.push_back(std::make_pair(e.first, (e.second/sig_to*50*res/(Geometry::getMax()-Geometry::getMin()))));
         }
         else{
-            flux_vec.push_back(std::make_pair(e.first, (e.second/sig_to*res/(Geometry::getMax()-Geometry::getMin()))));
+            flux_vec.push_back(std::make_pair(e.first, (e.second/sig_to/(Geometry::getMax()-Geometry::getMin()))));
         }
     }
 
