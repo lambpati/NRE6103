@@ -81,6 +81,6 @@ Eigenvalue problems have the same structure but the source term (S) can be defin
 For now, particles, mesh size (resolution), generations, and skipped generations are predefined at the top of `main.cc`. To change these parameters the library must be rebuilt following changes.
 
 ## Developers
-+[Patience Yockey](mailto:plamb6@gatech.edu)
+[Patience Yockey](mailto:plamb6@gatech.edu)
 
 For NRE 6103 Computational Transport Theory at Georgia Institute of Technology Spring 2023.
