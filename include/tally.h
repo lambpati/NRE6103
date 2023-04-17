@@ -19,6 +19,9 @@ private:
     inline static std::vector<double> std_dev;
     inline static std::vector<double> mean_flux;
 
+    inline static std::vector<std::pair<double, double>> forward_flux;
+    inline static std::vector<std::pair<double, double>>  adjoint_flux;
+
 public:
     //Methods
     Tally() = default;
@@ -33,6 +36,9 @@ public:
     static const std::vector<std::pair<double,double>> getFlux(){ return flux_vec; };
     static const std::vector<double> getMean(){ return mean_flux; };
     static const std::vector <double> getVariance() { return std_dev; };
+    static const std::vector<std::pair<double, double>> getForward(){return forward_flux; };
+    static const std::vector<std::pair<double, double>> getAdjoint(){ return adjoint_flux; };
+    static const double getWidth(){ return w; };
 
     //Setters
     static void setTallyType(bool f) { flux = f; };

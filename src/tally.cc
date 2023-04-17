@@ -7,6 +7,8 @@ void Tally::makeMesh(int res){
     w = (Geometry::getMax()-Geometry::getMin())/res;
     for(int i=0; i <= res; i++){
         pathlengths.push_back(std::make_pair((w*i),0.));
+        forward_flux.push_back(std::make_pair((w*i),0.));
+        adjoint_flux.push_back(std::make_pair((w*i),0.));
     }
 }
 
@@ -21,18 +23,51 @@ void Tally::pathLengthTally(double pos, double prev_pos, double dir, double weig
         // If particle starts in i-1 region and ends in i+1 region, tally where tracklength = w(i+1)-w(i) (canceling with the w)
         if(left_pos <= pathlengths.at(i).first && rite_pos >= pathlengths.at(i+1).first){
             pathlengths.at(i).second += std::abs(weight/dir)/(particles); // / 1000000 * 50 * 5;
+
+            //forward flux
+            if(left_pos == prev_pos){
+                forward_flux.at(i).second += std::abs(weight/dir)/(particles*(Geometry::getMax()-Geometry::getMin()));
+            }
+            //adjoint flux
+            else{
+                adjoint_flux.at(i).second += std::abs(weight/dir)/(particles*(Geometry::getMax()-Geometry::getMin()));
+            }
         }
         //If particle moves from in region i-1 to within region i, tracklength = rite_pos-w(i)
         else if(left_pos < pathlengths.at(i).first && rite_pos > pathlengths.at(i).first && rite_pos < pathlengths.at(i+1).first){
             pathlengths.at(i).second += std::abs(weight/dir*(rite_pos-w*i))/(w * particles);
+            //forward flux
+            if(left_pos == prev_pos){
+                forward_flux.at(i).second += std::abs(weight/dir*(prev_pos-w*i))/(w * particles*(Geometry::getMax()-Geometry::getMin()));
+            }
+            //adjoint flux
+            else{
+                adjoint_flux.at(i).second += std::abs(weight/dir*(pos-w*i))/(w * particles*(Geometry::getMax()-Geometry::getMin()));
+            }
         }
         //If particle mobves from within region i to within i+1, tracklength = w(i+1)-left_pos
         else if(left_pos > pathlengths.at(i).first && left_pos < pathlengths.at(i+1).first && rite_pos > pathlengths.at(i+1).first){
             pathlengths.at(i).second += std::abs(weight/dir*(w*(i+1)-left_pos))/(w * particles);
+            //forward flux
+            if(left_pos == prev_pos){
+                forward_flux.at(i).second += std::abs(weight/dir*(w*(i+1)-prev_pos))/(w * particles*(Geometry::getMax()-Geometry::getMin()));
+            }
+            //adjoint flux
+            else{
+                adjoint_flux.at(i).second += std::abs(weight/dir*(w*(i+1)-pos))/(w * particles*(Geometry::getMax()-Geometry::getMin()));
+            }
         }
         // If particle moves within bounds of tally, tally by taking the distance into consideration
         else if (left_pos >= pathlengths.at(i).first && rite_pos <= pathlengths.at(i + 1).first) {
             pathlengths.at(i).second += std::abs(weight/dir*dist)/(w * particles);
+           //forward flux
+            if(left_pos == prev_pos){
+                forward_flux.at(i).second += std::abs(weight/dir*(pos-prev_pos))/(w * particles*(Geometry::getMax()-Geometry::getMin()));
+            }
+            //adjoint flux
+            else{
+                adjoint_flux.at(i).second += std::abs(weight/dir*(prev_pos-pos))/(w * particles*(Geometry::getMax()-Geometry::getMin()));
+            }
         }
     }
 
@@ -63,6 +98,7 @@ void Tally::calculateFlux(int res){
         reg = transporter.determineMaterial(e.second);
         sig_to = Geometry::getXSvRegion(reg).sig_s + Geometry::getXSvRegion(reg).sig_a;
         if(Tally::getTallyType()){
+            // Set source of 50
             flux_vec.push_back(std::make_pair(e.first, (e.second/sig_to*50*res/(Geometry::getMax()-Geometry::getMin()))));
         }
         else{

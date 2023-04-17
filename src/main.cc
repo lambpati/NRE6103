@@ -12,10 +12,13 @@
 #include "../include/geometry.h"
 #include "../include/rng_gen.h"
 #include "../include/timer.h"
+#include "../include/pertubation.h"
 
 int main(int argc, char const *argv[]){
 
-    // TO DO add these parameters to a readable input form
+    // TODO Clean up main
+
+    // TODO add these parameters to a readable input form
     const int dx = 1000;
     double particles;
     const int batches = 100;
@@ -30,14 +33,11 @@ int main(int argc, char const *argv[]){
     unsigned long long timed=0;
 
 
-
-
-
     // Print intro to 1D solver
     UserControl::printIntro();
 
     // Get File name as a string
-    std::string name;
+    std::string name;double delta_in;
     std::cin >> name;
     UserControl::setFileName(name);
 
@@ -131,5 +131,17 @@ else {
     WriteProgram::writeToOutput(Tally::getFlux(), Avg_K);
     timed += t.seconds_elapsed();
     std::cout << "Finished Computation in " << timed << " seconds. Please look at the output.csv and statistics.csv files." << std::endl;
+   
+   //TODO Clean up pertubation
+    if(!Tally::getTallyType()){
+        double delta_in;
+        std::cout << "Enter a change in the absorption cross section of material 3 (+/-) in decimal form (not percent): ";
+        std::cin >> delta_in;
+        t.reset();
+        std::cout << "Calculating the pertubation result of " << (Geometry::getXS(2).sig_a+delta_in) << " sigma_a." << std::endl;
+        double k_pert = Pertubation::calculatePertubation(delta_in,Avg_K);
+        std::cout << "Perturbed K_eff is " << k_pert << std::endl;
+        std::cout << "Finished Computation in " << t.seconds_elapsed() << " seconds." << std::endl;
+    }
 
 }
