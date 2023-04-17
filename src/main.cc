@@ -19,7 +19,7 @@ int main(int argc, char const *argv[]){
     const int dx = 1000;
     const double particles = 10000;
     const int batches = 100;
-    const int inactive = 5;
+    const int inactive = 20;
 
     RNG_GEN::setSeed(896654);
 
@@ -54,11 +54,11 @@ int main(int argc, char const *argv[]){
     std::cout << "System timestamp: " << __TIMESTAMP__ << std::endl;
     //std::chrono::steady_clock::time_point start = std::chrono::steady_clock::now();
     timer t;
-
+    
     // Make particles
     for(int i = 0; i < particles; i++){
         //std::cout << "Adding particle " << i << std::endl;
-       transporter.initParticles(dx,particles, i);
+       transporter.initParticles(dx,particles);
     }
     std::cout << "Bank size: " << Bank::getMeshBank().size() << std::endl;
 
@@ -87,16 +87,21 @@ else {
             }
         transporter.moveParticle(e, dx, particles);
     }
+    k_eff.push_back((double)Bank::getNextBank().size() / particles);
 
     for (int i = 0; i < batches; i++) {
        // std::cout << "On generation " << i << std::endl;
-        k_eff.push_back((double)Bank::getNextBank().size() / (double)Bank::getMeshBank().size());
-       // std::cout << "K is " << k_eff.back() << std::endl;
+        k_eff.push_back((double)Bank::getNextBank().size() / Bank::getMeshBank().size());
+        //k_eff.push_back((double)Bank::getNextBank().size() / (double)Bank::getMeshBank().size());
+        //std::cout << "K is " << k_eff.back() << std::endl;
+        std::cout << "Current bank " << Bank::getMeshBank().size() << "Next bank " << Bank::getNextBank().size() << std::endl;
         Bank::initBanks();
+        std::cout << "Current bank " << Bank::getMeshBank().size() << "Next bank " << Bank::getNextBank().size();
         for (int j = 0; j < particles; j++) {
             // Choose  randomly from uniform distribution of fission particle bank to allow to propogate
-            int index = std::floor(RNG_GEN::rand()*Bank::getMeshBank().size());
+            int index = RNG_GEN::rand()*particles;
             Particle e = Bank::getMeshBank().at(index);
+            //std::cout << e.pos << std::endl;
             e.dir = 1 - 2 * RNG_GEN::rand();
             if (t.seconds_elapsed() % 30 == 0 && t.seconds_elapsed() != 0) {
                 timed += t.seconds_elapsed();

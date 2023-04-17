@@ -4,7 +4,7 @@
 //TESTING
 #include <iostream>
 
-void Transporter::initParticles(double dx, double part, int i){
+void Transporter::initParticles(double dx, double part){
     //Make new particle
     Particle p;
     // If flux fixed source problem
@@ -22,8 +22,8 @@ void Transporter::initParticles(double dx, double part, int i){
     // Else is eigenvalue problem
     else{
         current_region = Geometry::getRegion(2);
-        // Populate bank with v_sig_f as initial guess
-        p.pos = Transporter::detDist(part, i);
+        // Populate bank with v_sig_f as initial guess v_sig_f/sig_f
+        p.pos = Transporter::detDist(part);
         //std::cout << p.pos << std::endl;
         p.dir = 1-2*RNG_GEN::rand();
         // Set p.wgt to 1
@@ -35,8 +35,25 @@ void Transporter::initParticles(double dx, double part, int i){
     Bank::addParticle(p);
 }
 
-double Transporter::detDist(double part, int i) {
-    double position = (Geometry::getMax() - Geometry::getMin()) / part * i;
+double Transporter::detDist(double part) {
+    std::vector<double> positions;
+    for (int j = 0; j < Tally::getPathlengths().size(); j++){
+        // Remove hardcoded dx later
+        int region = Transporter::determineMaterial(Tally::getPathlengths().at(j).first);
+        positions.push_back(Geometry::getXS(region).v_sig_f);
+        //std::cout << positions.back() << std::endl;
+        
+    }
+    double sum = 0;
+    for(auto& e: positions) sum += e; 
+    //double sum = std::accumulate(positions.begin(), positions.end(), 0);
+    //std::cout << sum << std::endl;
+    double left = 0;
+    for(auto& e: positions){
+        e = left += e/sum;
+    }
+    double position = positions.at((int)positions.size()*RNG_GEN::rand());
+    std::cout << position << std::endl;
     return position;
 }
 
@@ -167,7 +184,7 @@ void Transporter::collision(Particle& p){
             p.wgt *= 1 - (Pfission - Pscatter);
         }
         else{
-           // p.is_alive = false;
+            p.is_alive = false;
         }
       //  std::cout << "fissioning " << std::endl;
     }
@@ -184,6 +201,7 @@ void Transporter::collision(Particle& p){
 }
 
 void Transporter::fissionNeutrons(Particle& p){
+    Transporter::determineMaterial(p);
     double sig_tot = Geometry::getXSvRegion(current_region).sig_s + Geometry::getXSvRegion(current_region).sig_a;
     double k_score = p.wgt * Geometry::getXSvRegion(current_region).v_sig_f / Geometry::getXSvRegion(current_region).sig_f;
 

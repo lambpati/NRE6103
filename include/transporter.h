@@ -30,9 +30,7 @@ class Transporter {
 
         void initParticles(double dx, double part=0);
         
-        double detDist(double part, int i);
-
-        void initParticles(double dx, double part, int i);
+        double detDist(double part);
 
         void russianRoulette(Particle& p);
         void collision(Particle& p);

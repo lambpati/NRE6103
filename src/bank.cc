@@ -14,6 +14,7 @@ void Bank::addNextPart(Particle& p){
 void Bank::initBanks() {
     mesh_bank.swap(next_gen);
     //mesh_bank = next_gen;
+    mesh_bank.resize(10000);
     //clear without references
     for (int i = next_gen.size(); i > 0; i--) {
         next_gen.pop_back();
