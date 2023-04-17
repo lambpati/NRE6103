@@ -1,4 +1,7 @@
-# NRE6103
+# NRE6103: 1D Heterogeneous Material Monte Carlo Neutron Transport Code
+[![CMake](https://github.com/lambpati/NRE6103/actions/workflows/cmake.yml/badge.svg)](https://github.com/lambpati/NRE6103/actions/workflows/cmake.yml)
+[![CodeQL](https://github.com/lambpati/NRE6103/actions/workflows/codeql.yml/badge.svg)](https://github.com/lambpati/NRE6103/actions/workflows/codeql.yml)
+
 Computational Transport Theory Project for NRE 6103 at Georgia Institute of Technology. This code calculates scalar flux and eigenvalues for heterogeneous materials within slab geometry without energy reliance.
 
 ## Requirements
@@ -6,30 +9,51 @@ Have the latest version of CMake installed. For directions on how to install, re
 
 ## Building
 To build with modern CMake from console, use 
+
 `cmake -S . -B build`
+
 For a majority of IDEs, the CMakeLists.txt can be detected and built using IDE specific functions automatically.
+
 ## Making
 To make on Linux or variants (Cygwin etc.)
+
 `cd build` to enter the build directory
+
 `make all` to make code.
+
 IDEs commonly handle this process itself when selecting run on a .cc file.
+
 ## Running
 To run, simply run a compiled binary.
+
 On Linux from the `build` directory simply run
+
 `./MonteCarlo1D`
+
 On Windows,from the `build` directory run
+
 `.\MonteCarlo1D.exe`
+
 In an IDE will handle this process automatically by selecting a .cc file when running.
+
 ## Running examples
 Example problems (problem1.txt -> fixed source, problem2a.txt -> eigenvalue, problem2b_benchmark.txt -> absorption cross section perturbed 2a) are contained within the `examples` directory under the main library path.
+
 Run using the process highlighted above and when prompted, enter the file name you wish to run.
+
 For ease of use, the number of particles, mesh size (resolution), generations, and skipped generations are predefined in the `main.cc` file.
+
 For fixed source problems, the particle count is 1,000,000 with a resolution of 1,000.
+
 For eigenvalue problems, the particle count is 10,000 per generation for 100 generations, skipping the first 20 generations before determining K_eff.
+
 If chosing an eigenvalue problem, at the end of the Monte Carlo simulation, the user will be prompted for a change in the absorption cross section in material 3 (defined in problem2a.txt).
+
 This value should be in decimal form and can be positive or negative. Giving a non-zero value for the change in absorption cross section will result in calculation of the perturbed K_eff.
+
 ## Example file input structure
 Input files are constructed relatively similar to MCNP or SCALE, except for the exclusion of material properties, only using raw macroscopic cross sections.
+
 An example file structure (problem1.txt) is constructed as follows to showcase the structure of an input file:
 ```
 // PROBLEM 1
@@ -55,3 +79,8 @@ DATA
 ```
 Eigenvalue problems have the same structure but the source term (S) can be defined as any numeric value and will not be taken into account.
 For now, particles, mesh size (resolution), generations, and skipped generations are predefined at the top of `main.cc`. To change these parameters the library must be rebuilt following changes.
+
+## Developers
++[Patience Yockey](mailto:plamb6@gatech.edu)
+
+For NRE 6103 Computational Transport Theory at Georgia Institute of Technology Spring 2023.
