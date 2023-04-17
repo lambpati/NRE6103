@@ -38,7 +38,6 @@ void Transporter::initParticles(double dx, double part){
 double Transporter::detDist(double part) {
     std::vector<double> positions;
     for (int j = 0; j < Tally::getPathlengths().size(); j++){
-        // Remove hardcoded dx later
         int region = Transporter::determineMaterial(Tally::getPathlengths().at(j).first);
         positions.push_back(Geometry::getXS(region).v_sig_f);
         //std::cout << positions.back() << std::endl;
@@ -53,7 +52,7 @@ double Transporter::detDist(double part) {
         e = left += e/sum;
     }
     double position = positions.at((int)positions.size()*RNG_GEN::rand());
-    std::cout << position << std::endl;
+    //std::cout << position << std::endl;
     return position;
 }
 
