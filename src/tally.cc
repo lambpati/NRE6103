@@ -7,6 +7,7 @@ void Tally::makeMesh(int res){
     w = (Geometry::getMax()-Geometry::getMin())/res;
     for(int i=0; i <= res; i++){
         pathlengths.push_back(std::make_pair((w*i),0.));
+        positions.push_back(w*i);
         forward_flux.push_back(std::make_pair((w*i),0.));
         adjoint_flux.push_back(std::make_pair((w*i),0.));
     }
@@ -80,12 +81,11 @@ void Tally::calculateMeanVariance(const std::vector<std::pair<double, double>>& 
         mean += delta / (i + 1);
         M2 += delta * (vect.at(i).second - mean);
         variance = M2 / (i + 1);
-        if (i >= 2) {
-            
-        }
+        //if (i >= 2) {
+            mean_flux.push_back(mean);
+            std_dev.push_back(variance);    
+        //}
     }
-    mean_flux.push_back(mean);
-    std_dev.push_back(variance);
 }
 
 
@@ -98,8 +98,8 @@ void Tally::calculateFlux(int res){
         reg = transporter.determineMaterial(e.second);
         sig_to = Geometry::getXSvRegion(reg).sig_s + Geometry::getXSvRegion(reg).sig_a;
         if(Tally::getTallyType()){
-            // Set source of 50
-            flux_vec.push_back(std::make_pair(e.first, (e.second/sig_to*50*res/(Geometry::getMax()-Geometry::getMin()))));
+            // Set source to be consistently in the 3rd region
+            flux_vec.push_back(std::make_pair(e.first, (e.second/sig_to*Geometry::getXS(2).s*res/(Geometry::getMax()-Geometry::getMin()))));
         }
         else{
             flux_vec.push_back(std::make_pair(e.first, (e.second/(Geometry::getMax()-Geometry::getMin()))));
