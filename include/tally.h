@@ -13,6 +13,7 @@ class Tally {
 private:
     inline static bool flux;
     inline static double w;
+    inline static std::vector<double> positions;
     inline static std::vector<std::pair<double, double>> pathlengths;
     inline static std::vector<std::pair<double, double>> flux_vec;
 
@@ -38,6 +39,7 @@ public:
     static const std::vector <double> getVariance() { return std_dev; };
     static const std::vector<std::pair<double, double>> getForward(){return forward_flux; };
     static const std::vector<std::pair<double, double>> getAdjoint(){ return adjoint_flux; };
+    static const std::vector<double> getPositions(){ return positions; };
     static const double getWidth(){ return w; };
 
     //Setters

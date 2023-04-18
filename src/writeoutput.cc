@@ -45,12 +45,12 @@ void WriteProgram::writeToOutput(std::vector<double> val, std::vector<double> po
      out.close();
 }
 // Writes array values val into a csv file known as "statistics.csv"
-void WriteProgram::writeToStatistics(std::vector<double> val, std::vector<double> pos){
+void WriteProgram::writeToStatistics(std::vector<double> pos, std::vector<double> mea, std::vector<double> var){
        out.open(mean, std::ios_base::trunc);
        // Header
-       out << "Mean,Variance \n";
-       for(int i=0; i < val.size(); i++){
-        out << pos.at(i) << "," << val.at(i) << "\n";
+       out << "Position,Mean,Variance \n";
+       for(int i=0; i < mea.size(); i++){
+        out << pos.at(i) << "," << mea.at(i) << "," << var.at(i) << "\n";
 //       out << '\n';
      }
      out.close();
